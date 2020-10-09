@@ -5,7 +5,7 @@ Welcome to our calendar
 ## Group Members
 
 Mark Farber
-![alt text](https://github.com/scalableinternetservices/atp/blob/main/IMG_0845.jpg.jpg?raw=true)
+![alt text](https://github.com/scalableinternetservices/atp/blob/main/IMG_0845.jpg?raw=true)
 
 Jack Brewer
 ![alt text](https://github.com/scalableinternetservices/atp/blob/main/jack.jpeg?raw=true)
