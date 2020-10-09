@@ -2,6 +2,16 @@
 
 Welcome to Cloud City!
 
+## Group Members
+
+Mark Farber
+
+Jack Brewer
+
+Adam Griffin
+
+Keyu Ji
+
 ## Dependencies
 
 For the [Quickstart](https://github.com/rothfels/bespin#Quickstart), you will need:
