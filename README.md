@@ -8,7 +8,7 @@ Mark Farber
 
 Jack Brewer
 
-![Image of Jack](https://drive.google.com/file/d/1mvBEOrIX7tcTlHsNMm04r-k1kkk0z3XY/view?usp=sharing)
+![alt text](https://github.com/scalableinternetservices/atp/blob/main/jack.jpeg?raw=true)
 
 Adam Griffin
 
