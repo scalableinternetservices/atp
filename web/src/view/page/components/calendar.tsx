@@ -1,14 +1,14 @@
-import { AppointmentModel } from '@devexpress/dx-react-scheduler'
+import { AppointmentModel } from '@devexpress/dx-react-scheduler';
 import {
-	Appointments,
-	AppointmentTooltip,
-	Resources,
-	Scheduler,
-	WeekView
-} from '@devexpress/dx-react-scheduler-material-ui'
-import Paper from '@material-ui/core/Paper'
+  Appointments,
+  AppointmentTooltip,
+  Resources,
+  Scheduler,
+  WeekView
+} from '@devexpress/dx-react-scheduler-material-ui';
+import Paper from '@material-ui/core/Paper';
 // import { RouteComponentProps } from '@reach/router'
-import * as React from 'react'
+import * as React from 'react';
 
 // interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
@@ -23,19 +23,27 @@ const resources = [
   },
 ]
 
+const Appointment: React.ComponentType<Appointments.AppointmentProps> = (props) =>
+{
+  return <Appointments.Appointment {...props} onClick={() => window.open(props.data.zoom)} />
+}
+
 const appointments: Array<AppointmentModel> = [
   {
-    startDate: new Date(2020, 9, 13, 10, 15), // Month is 0-indexed
-    endDate: new Date(2020, 9, 13, 11, 45),
+    startDate: new Date(2020, 9, 13, 10, 0), // Month is 0-indexed
+    endDate: new Date(2020, 9, 13, 11, 50),
     title: 'CS 118',
     type: 'class',
     rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
+    zoom: 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09'
   },
   {
-    startDate: new Date(2020, 9, 17, 8, 0),
-    endDate: new Date(2020, 9, 17, 9, 50),
-    title: 'Go to a gym',
-    type: 'work',
+    startDate: new Date(2020, 9, 12, 8, 0), // Month is 0-indexed
+    endDate: new Date(2020, 9, 12, 9, 50),
+    title: 'CS 188',
+    type: 'class',
+    rRule: 'FREQ=WEEKLY;BYDAY=MO,WE',
+    zoom: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09'
   },
 ]
 
@@ -43,10 +51,10 @@ export function Calendar() {
   return (
     <React.Fragment>
       <Paper>
-        <Scheduler height={400} data={appointments}>
+        <Scheduler height={600} data={appointments}>
           <WeekView startDayHour={8} endDayHour={20} cellDuration={60} />
-          <Appointments />
-          <AppointmentTooltip showCloseButton />
+          <Appointments appointmentComponent={Appointment}/>
+          <AppointmentTooltip visible={false}/>
           <Resources data={resources} />
         </Scheduler>
       </Paper>
