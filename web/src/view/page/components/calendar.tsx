@@ -11,8 +11,7 @@ import {
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-
-// interface HomePageProps extends RouteComponentProps, AppRouteParams {}
+import { Classes } from '../../../../../server/src/entities/Classes'
 
 const resources = [
   {
@@ -43,7 +42,7 @@ const appointments: Array<AppointmentModel> = [
     endDate: new Date(2020, 9, 12, 9, 50),
     title: 'CS 188',
     type: 'class',
-    rRule: 'FREQ=WEEKLY;BYDAY=MO,WE',
+    rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
     zoom: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09',
   },
 ]

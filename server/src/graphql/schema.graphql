@@ -20,6 +20,7 @@ type Query {
 
   surveys: [Survey!]!
   survey (surveyId: Int!): Survey
+  classes (classId: Int!): Classes
 }
 
 type Mutation {
@@ -40,6 +41,8 @@ type User {
   email: String!
   name: String!
 }
+
+scalar Date
 
 enum UserType { ADMIN, USER }
 
@@ -87,5 +90,19 @@ type SurveyAnswer {
 input SurveyInput {
   questionId: Int!
   answer: String!
+}
+
+type Classes {
+  id: Int!
+
+  title: String!
+
+  rRule: String!
+
+  zoom: String!
+
+  startDate: Date!
+
+  endDate: Date!
 }
 
