@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+//import { Classes as GraphqlClasses } from '../graphql/schema.types'
 
 @Entity()
 export class Classes extends BaseEntity {

@@ -42,8 +42,6 @@ type User {
   name: String!
 }
 
-scalar Date
-
 enum UserType { ADMIN, USER }
 
 type Survey {
@@ -101,8 +99,8 @@ type Classes {
 
   zoom: String!
 
-  startDate: Date!
+  startDate: String!
 
-  endDate: Date!
+  endDate: String!
 }
 

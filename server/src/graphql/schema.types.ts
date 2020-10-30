@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
+import { GraphQLResolveInfo } from 'graphql'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } &
@@ -10,7 +10,6 @@ export interface Scalars {
   Boolean: boolean
   Int: number
   Float: number
-  Date: any
 }
 
 export interface Query {
@@ -102,8 +101,8 @@ export interface Classes {
   title: Scalars['String']
   rRule: Scalars['String']
   zoom: Scalars['String']
-  startDate: Scalars['Date']
-  endDate: Scalars['Date']
+  startDate: Scalars['String']
+  endDate: Scalars['String']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -190,7 +189,6 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>
   User: ResolverTypeWrapper<User>
   String: ResolverTypeWrapper<Scalars['String']>
-  Date: ResolverTypeWrapper<Scalars['Date']>
   UserType: UserType
   Survey: ResolverTypeWrapper<Survey>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
@@ -208,7 +206,6 @@ export type ResolversParentTypes = {
   Subscription: {}
   User: User
   String: Scalars['String']
-  Date: Scalars['Date']
   Survey: Survey
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
@@ -278,10 +275,6 @@ export type UserResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
-  name: 'Date'
-}
-
 export type SurveyResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Survey'] = ResolversParentTypes['Survey']
@@ -325,8 +318,8 @@ export type ClassesResolvers<
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   rRule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   zoom?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  startDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
-  endDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
+  startDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  endDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -335,7 +328,6 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>
   User?: UserResolvers<ContextType>
-  Date?: GraphQLScalarType
   Survey?: SurveyResolvers<ContextType>
   SurveyQuestion?: SurveyQuestionResolvers<ContextType>
   SurveyAnswer?: SurveyAnswerResolvers<ContextType>

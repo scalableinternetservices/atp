@@ -8,7 +8,6 @@ import { SurveyAnswer } from '../entities/SurveyAnswer'
 import { SurveyQuestion } from '../entities/SurveyQuestion'
 import { User } from '../entities/User'
 import { Resolvers } from './schema.types'
-import { GraphQLDateTime } from "graphql-iso-date"
 
 export const pubsub = new PubSub()
 
@@ -24,16 +23,12 @@ interface Context {
   pubsub: PubSub
 }
 
-export const resolvers = {
-  Date: GraphQLDateTime
-}
-
 export const graphqlRoot: Resolvers<Context> = {
   Query: {
     self: (_, args, ctx) => ctx.user,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
-    classes: async (_, { classId }) => (await Classes.findOne({ where: { id: classId } })) || null,
+    classes: async (_, { classId }) => ((await Classes.findOne({ where: { id: classId } })) || null) as any,
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
