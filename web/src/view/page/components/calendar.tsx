@@ -11,7 +11,7 @@ import {
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-import { Classes } from '../../../../../server/src/entities/Classes'
+// import { Classes } from '../../../../../server/src/entities/Classes'
 
 const resources = [
   {
@@ -25,7 +25,7 @@ const resources = [
 ]
 
 const Appointment: React.ComponentType<Appointments.AppointmentProps> = props => {
-  return <Appointments.Appointment {...props} onClick={() => window.open(props.data.notes)} />
+  return <Appointments.Appointment {...props} onClick={() => window.open(props.data.link)} />
 }
 
 const appointments: Array<AppointmentModel> = [
@@ -35,7 +35,7 @@ const appointments: Array<AppointmentModel> = [
     title: 'CS 118',
     type: 'class',
     rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
-    notes: 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09',
+    link: 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09',
   },
   {
     startDate: new Date(2020, 9, 12, 8, 0), // Month is 0-indexed
@@ -43,9 +43,40 @@ const appointments: Array<AppointmentModel> = [
     title: 'CS 188',
     type: 'class',
     rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
-    notes: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09',
+    link: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09',
   },
 ]
+
+const messages = {
+  moreInformationLabel: '',
+}
+
+const TextEditor = (props: any) => {
+  // eslint-disable-next-line react/destructuring-assignment
+  if (props.type === 'multilineTextEditor') {
+    return null
+  }
+  return <AppointmentForm.TextEditor {...props} />
+}
+
+const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }: any) => {
+  const onLinkChange = (nextValue: any) => {
+    onFieldChange({ link: nextValue })
+  }
+
+  return (
+    <AppointmentForm.BasicLayout appointmentData={appointmentData} onFieldChange={onFieldChange} {...restProps}>
+      <AppointmentForm.Label text="Zoom Link" type="titleLabel" />
+      <AppointmentForm.TextEditor
+        value={appointmentData.link}
+        onValueChange={onLinkChange}
+        placeholder="Zoom Link"
+        readOnly={false}
+        type="titleTextEditor"
+      />
+    </AppointmentForm.BasicLayout>
+  )
+}
 
 export class Calendar extends React.PureComponent<any, any> {
   constructor(props: any) {
@@ -91,7 +122,7 @@ export class Calendar extends React.PureComponent<any, any> {
             <ConfirmationDialog />
             <Resources data={resources} />
             <AppointmentTooltip visible={false} />
-            <AppointmentForm />
+            <AppointmentForm basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor} messages={messages} />
           </Scheduler>
         </Paper>
       </React.Fragment>
