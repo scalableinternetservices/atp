@@ -25,7 +25,7 @@ const resources = [
 ]
 
 const Appointment: React.ComponentType<Appointments.AppointmentProps> = props => {
-  return <Appointments.Appointment {...props} onClick={() => window.open(props.data.zoom)} />
+  return <Appointments.Appointment {...props} onClick={() => window.open(props.data.notes)} />
 }
 
 const appointments: Array<AppointmentModel> = [
@@ -35,7 +35,7 @@ const appointments: Array<AppointmentModel> = [
     title: 'CS 118',
     type: 'class',
     rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
-    zoom: 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09',
+    notes: 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09',
   },
   {
     startDate: new Date(2020, 9, 12, 8, 0), // Month is 0-indexed
@@ -43,7 +43,7 @@ const appointments: Array<AppointmentModel> = [
     title: 'CS 188',
     type: 'class',
     rRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
-    zoom: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09',
+    notes: 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09',
   },
 ]
 
