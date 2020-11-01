@@ -29,6 +29,8 @@ type Mutation {
 
   # Moves the survey to the next question (or starts it if it hasn't started). ADMIN only.
   nextSurveyQuestion (surveyId: Int!): Survey
+
+  createClass (input: ClassInput!): Boolean!
 }
 
 type Subscription {
@@ -104,3 +106,10 @@ type Classes {
   endDate: String!
 }
 
+input ClassInput {
+  title: String!
+  rRule: String!
+  zoom: String!
+  startDate: String!
+  endDate: String!
+}

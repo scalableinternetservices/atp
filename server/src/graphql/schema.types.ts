@@ -32,6 +32,7 @@ export interface Mutation {
   __typename?: 'Mutation'
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
+  createClass: Scalars['Boolean']
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -40,6 +41,10 @@ export interface MutationAnswerSurveyArgs {
 
 export interface MutationNextSurveyQuestionArgs {
   surveyId: Scalars['Int']
+}
+
+export interface MutationCreateClassArgs {
+  input: ClassInput
 }
 
 export interface Subscription {
@@ -98,6 +103,14 @@ export interface SurveyInput {
 export interface Classes {
   __typename?: 'Classes'
   id: Scalars['Int']
+  title: Scalars['String']
+  rRule: Scalars['String']
+  zoom: Scalars['String']
+  startDate: Scalars['String']
+  endDate: Scalars['String']
+}
+
+export interface ClassInput {
   title: Scalars['String']
   rRule: Scalars['String']
   zoom: Scalars['String']
@@ -195,6 +208,7 @@ export type ResolversTypes = {
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
   SurveyInput: SurveyInput
   Classes: ResolverTypeWrapper<Classes>
+  ClassInput: ClassInput
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -211,6 +225,7 @@ export type ResolversParentTypes = {
   SurveyAnswer: SurveyAnswer
   SurveyInput: SurveyInput
   Classes: Classes
+  ClassInput: ClassInput
 }
 
 export type QueryResolvers<
@@ -248,6 +263,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationNextSurveyQuestionArgs, 'surveyId'>
+  >
+  createClass?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateClassArgs, 'input'>
   >
 }
 

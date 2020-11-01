@@ -53,6 +53,19 @@ export const graphqlRoot: Resolvers<Context> = {
       ctx.pubsub.publish('SURVEY_UPDATE_' + surveyId, survey)
       return survey
     },
+    createClass: async (_, { input }) => {
+      const { title, rRule, zoom, startDate, endDate } = input
+
+      const addClass = new Classes()
+      addClass.title = title
+      addClass.rRule = rRule
+      addClass.zoom = zoom
+      addClass.startDate = new Date(startDate)
+      addClass.endDate = new Date(endDate)
+      await addClass.save()
+
+      return true
+    },
   },
   Subscription: {
     surveyUpdates: {
