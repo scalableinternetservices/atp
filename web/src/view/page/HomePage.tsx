@@ -1,5 +1,6 @@
-import { FormGroup } from '@material-ui/core'
+import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch/Switch'
@@ -9,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import AddIcon from '@material-ui/icons/Add'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { AppRouteParams } from '../nav/route'
@@ -23,18 +25,22 @@ const useStyles = makeStyles({
   },
 })
 
-function showFriend(value: any) {
+function showFriend(event: React.ChangeEvent<{}>, checked: boolean) {
   /* show friends calendar */
 }
 
-function createFriend(userID: number, username: string) {
-  return { userID, username }
+function createFriend(username: string) {
+  return { username }
 }
 
-const rows = [createFriend(123, 'adgrf'), createFriend(891, 'grifw')]
-
 export function HomePage(props: HomePageProps) {
+  const sample = [createFriend('adgrf'), createFriend('grifw')]
+
+  const [friends, setFriends] = React.useState(sample)
+
+  const usernameInput = React.createRef<HTMLInputElement>()
   const classes = useStyles()
+
   return (
     <React.Fragment>
       <Page>
@@ -46,15 +52,31 @@ export function HomePage(props: HomePageProps) {
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Friends</TableCell>
-                        <TableCell align="right">Show Calendar</TableCell>
+                        <TableCell align="left">Friends</TableCell>
+                        <TableCell>
+                          <input ref={usernameInput} type="text" placeholder="Add friend..." />
+                        </TableCell>
+                        <TableCell>
+                          <Fab
+                            color="primary"
+                            aria-label="add"
+                            size="small"
+                            onClick={() => {
+                              const newFriends = [...friends, createFriend(usernameInput.current!.value)]
+                              setFriends(newFriends)
+                              usernameInput.current!.value = ''
+                            }}
+                          >
+                            <AddIcon />
+                          </Fab>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map(row => (
-                        <TableRow key={row.userID}>
+                      {friends.map(friend => (
+                        <TableRow key={friend.username}>
                           <TableCell component="th" scope="row">
-                            {row.username}
+                            {friend.username}
                           </TableCell>
                           <TableCell align="right">
                             {' '}
@@ -62,7 +84,7 @@ export function HomePage(props: HomePageProps) {
                               control={<Switch />}
                               label=""
                               onChange={showFriend}
-                              id={'checkbox' + row.userID}
+                              id={'checkbox' + friend.username}
                             ></FormControlLabel>
                           </TableCell>
                         </TableRow>
