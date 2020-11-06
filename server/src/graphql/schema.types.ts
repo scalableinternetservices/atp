@@ -18,6 +18,7 @@ export interface Query {
   surveys: Array<Survey>
   survey?: Maybe<Survey>
   classes: Array<Maybe<Classes>>
+  friends?: Maybe<Friends>
 }
 
 export interface QuerySurveyArgs {
@@ -28,11 +29,16 @@ export interface QueryClassesArgs {
   email: Scalars['String']
 }
 
+export interface QueryFriendsArgs {
+  email: Scalars['String']
+}
+
 export interface Mutation {
   __typename?: 'Mutation'
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
   createClass: Scalars['Boolean']
+  addFriend: Scalars['Boolean']
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -45,6 +51,10 @@ export interface MutationNextSurveyQuestionArgs {
 
 export interface MutationCreateClassArgs {
   input: ClassInput
+}
+
+export interface MutationAddFriendArgs {
+  input: FriendInput
 }
 
 export interface Subscription {
@@ -116,6 +126,17 @@ export interface ClassInput {
   zoom: Scalars['String']
   startDate: Scalars['String']
   endDate: Scalars['String']
+  email: Scalars['String']
+}
+
+export interface Friends {
+  __typename?: 'Friends'
+  id: Scalars['Int']
+  friends: Array<Maybe<Scalars['String']>>
+}
+
+export interface FriendInput {
+  friend: Scalars['String']
   email: Scalars['String']
 }
 
@@ -210,6 +231,8 @@ export type ResolversTypes = {
   SurveyInput: SurveyInput
   Classes: ResolverTypeWrapper<Classes>
   ClassInput: ClassInput
+  Friends: ResolverTypeWrapper<Friends>
+  FriendInput: FriendInput
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -227,6 +250,8 @@ export type ResolversParentTypes = {
   SurveyInput: SurveyInput
   Classes: Classes
   ClassInput: ClassInput
+  Friends: Friends
+  FriendInput: FriendInput
 }
 
 export type QueryResolvers<
@@ -246,6 +271,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryClassesArgs, 'email'>
+  >
+  friends?: Resolver<
+    Maybe<ResolversTypes['Friends']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFriendsArgs, 'email'>
   >
 }
 
@@ -270,6 +301,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateClassArgs, 'input'>
+  >
+  addFriend?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddFriendArgs, 'input'>
   >
 }
 
@@ -345,6 +382,15 @@ export type ClassesResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
+export type FriendsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Friends'] = ResolversParentTypes['Friends']
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  friends?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
@@ -354,6 +400,7 @@ export type Resolvers<ContextType = any> = {
   SurveyQuestion?: SurveyQuestionResolvers<ContextType>
   SurveyAnswer?: SurveyAnswerResolvers<ContextType>
   Classes?: ClassesResolvers<ContextType>
+  Friends?: FriendsResolvers<ContextType>
 }
 
 /**

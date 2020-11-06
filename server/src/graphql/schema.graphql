@@ -21,6 +21,7 @@ type Query {
   surveys: [Survey!]!
   survey (surveyId: Int!): Survey
   classes (email: String!): [Classes]!
+  friends (email: String!): Friends
 }
 
 type Mutation {
@@ -31,6 +32,7 @@ type Mutation {
   nextSurveyQuestion (surveyId: Int!): Survey
 
   createClass (input: ClassInput!): Boolean!
+  addFriend (input: FriendInput!): Boolean!
 }
 
 type Subscription {
@@ -112,5 +114,15 @@ input ClassInput {
   zoom: String!
   startDate: String!
   endDate: String!
+  email: String!
+}
+
+type Friends {
+  id: Int!
+  friends: [String]!
+}
+
+input FriendInput {
+  friend: String!
   email: String!
 }

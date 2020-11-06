@@ -4,6 +4,7 @@ import path from 'path'
 import { getRepository } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Classes } from '../entities/Classes'
+import { Friends } from '../entities/Friends'
 import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
 import { SurveyQuestion } from '../entities/SurveyQuestion'
@@ -36,6 +37,13 @@ export const graphqlRoot: Resolvers<Context> = {
         .leftJoinAndSelect('classes.user', 'user')
         .where('user.email = :email', { email })
         .getMany()
+    ) as any,
+    friends: async (_, { email }) => (
+      await getRepository(Friends)
+        .createQueryBuilder('friends')
+        .leftJoinAndSelect('friends.user', 'user')
+        .where('user.email = :email', { email })
+        .getOne()
     ) as any,
   },
   Mutation: {
@@ -77,6 +85,29 @@ export const graphqlRoot: Resolvers<Context> = {
       addClass.endDate = new Date(endDate)
       addClass.user = user
       await addClass.save()
+
+      return true
+    },
+    addFriend: async (_, { input }) => {
+      const { email, friend } = input
+
+      const user = await User.findOne({ where: { email: email } })
+      if (!user) {
+        return false
+      }
+
+      const currFriends = await Friends.findOne({where: { user: user }})
+
+      if (!currFriends) {
+        const newFriend = new Friends()
+        newFriend.user = user
+        newFriend.friends = [friend]
+        await newFriend.save()
+      }
+      else {
+        currFriends.friends.push(friend)
+        await currFriends.save()
+      }
 
       return true
     },
