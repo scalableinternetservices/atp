@@ -17,7 +17,7 @@ export interface Query {
   self?: Maybe<User>
   surveys: Array<Survey>
   survey?: Maybe<Survey>
-  classes: Array<Maybe<Classes>>
+  classes: Array<Classes>
   friends?: Maybe<Friends>
 }
 
@@ -267,7 +267,7 @@ export type QueryResolvers<
     RequireFields<QuerySurveyArgs, 'surveyId'>
   >
   classes?: Resolver<
-    Array<Maybe<ResolversTypes['Classes']>>,
+    Array<ResolversTypes['Classes']>,
     ParentType,
     ContextType,
     RequireFields<QueryClassesArgs, 'email'>
