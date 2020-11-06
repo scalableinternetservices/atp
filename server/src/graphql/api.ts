@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
+import { getRepository } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Classes } from '../entities/Classes'
+import { Friends } from '../entities/Friends'
 import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
 import { SurveyQuestion } from '../entities/SurveyQuestion'
@@ -28,7 +30,21 @@ export const graphqlRoot: Resolvers<Context> = {
     self: (_, args, ctx) => ctx.user,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
-    classes: async (_, { classId }) => ((await Classes.findOne({ where: { id: classId } })) || null) as any,
+    //classes: async (_, { email }) => ((await Classes.find({ where: { id: email } })) || null) as any,
+    classes: async (_, { email }) => (
+      await getRepository(Classes)
+        .createQueryBuilder('classes')
+        .leftJoinAndSelect('classes.user', 'user')
+        .where('user.email = :email', { email })
+        .getMany()
+    ) as any,
+    friends: async (_, { email }) => (
+      await getRepository(Friends)
+        .createQueryBuilder('friends')
+        .leftJoinAndSelect('friends.user', 'user')
+        .where('user.email = :email', { email })
+        .getOne()
+    ) as any,
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -54,7 +70,12 @@ export const graphqlRoot: Resolvers<Context> = {
       return survey
     },
     createClass: async (_, { input }) => {
-      const { title, rRule, zoom, startDate, endDate } = input
+      const { title, rRule, zoom, startDate, endDate, email } = input
+
+      const user = await User.findOne({ where: { email: email } })
+      if (!user) {
+        return false
+      }
 
       const addClass = new Classes()
       addClass.title = title
@@ -62,7 +83,31 @@ export const graphqlRoot: Resolvers<Context> = {
       addClass.zoom = zoom
       addClass.startDate = new Date(startDate)
       addClass.endDate = new Date(endDate)
+      addClass.user = user
       await addClass.save()
+
+      return true
+    },
+    addFriend: async (_, { input }) => {
+      const { email, friend } = input
+
+      const user = await User.findOne({ where: { email: email } })
+      if (!user) {
+        return false
+      }
+
+      const currFriends = await Friends.findOne({where: { user: user }})
+
+      if (!currFriends) {
+        const newFriend = new Friends()
+        newFriend.user = user
+        newFriend.friends = [friend]
+        await newFriend.save()
+      }
+      else {
+        currFriends.friends.push(friend)
+        await currFriends.save()
+      }
 
       return true
     },
