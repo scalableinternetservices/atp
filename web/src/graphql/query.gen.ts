@@ -12,6 +12,7 @@ export interface FetchUserContext_self {
   id: number;
   name: string;
   userType: UserType;
+  email: string;
 }
 
 export interface FetchUserContext {
@@ -38,7 +39,7 @@ export interface FetchClasses_classes {
 }
 
 export interface FetchClasses {
-  classes: (FetchClasses_classes | null)[];
+  classes: FetchClasses_classes[];
 }
 
 export interface FetchClassesVariables {

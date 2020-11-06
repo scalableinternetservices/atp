@@ -6,6 +6,9 @@ export class UserCtx {
   isAdmin() {
     return this.user && this.user?.userType === UserType.ADMIN
   }
+  getEmail() {
+    return this.user && this.user.email
+  }
 }
 
 export const UserContext = React.createContext<UserCtx>(new UserCtx(null))

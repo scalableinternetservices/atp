@@ -16,11 +16,7 @@ import { Calendar } from './components/calendar'
 import { Page } from './Page'
 
 interface HomePageProps extends RouteComponentProps, AppRouteParams {}
-/*
-function createData(name: string, zoom: string) {
-  return { name, zoom }
-}
-*/
+
 const useStyles = makeStyles({
   table: {
     minWidth: 300,
@@ -38,16 +34,6 @@ function createFriend(userID: number, username: string) {
 const rows = [createFriend(123, 'adgrf'), createFriend(891, 'grifw')]
 
 export function HomePage(props: HomePageProps) {
-  /*
-  const sample = [
-    createData('CS 188', 'https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09'),
-    createData('CS 118', 'https://ucla.zoom.us/j/95034758361?pwd=WWtFYU9YVWpLTlVMeCt0RFBuTEg1Zz09'),
-  ]
-  const [rows, setRows] = React.useState(sample)
-  const onAdd = (name: string, zoom: string) => {
-    const new_rows = [...rows, createData(name, zoom)]
-    setRows(new_rows)
-  }*/
   const classes = useStyles()
   return (
     <React.Fragment>
