@@ -24,6 +24,33 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchClasses
+// ====================================================
+
+export interface FetchClasses_classes {
+  __typename: "Classes";
+  id: number;
+  title: string;
+  rRule: string;
+  zoom: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface FetchClasses {
+  classes: (FetchClasses_classes | null)[];
+}
+
+export interface FetchClassesVariables {
+  email: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -185,6 +212,25 @@ export interface NextSurveyQuestion {
 
 export interface NextSurveyQuestionVariables {
   surveyId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: Classes
+// ====================================================
+
+export interface Classes {
+  __typename: "Classes";
+  id: number;
+  title: string;
+  rRule: string;
+  zoom: string;
+  startDate: string;
+  endDate: string;
 }
 
 /* tslint:disable */
