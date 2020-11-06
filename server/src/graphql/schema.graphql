@@ -20,7 +20,7 @@ type Query {
 
   surveys: [Survey!]!
   survey (surveyId: Int!): Survey
-  classes (classId: Int!): Classes
+  classes (email: String!): [Classes]!
 }
 
 type Mutation {
@@ -112,4 +112,5 @@ input ClassInput {
   zoom: String!
   startDate: String!
   endDate: String!
+  email: String!
 }

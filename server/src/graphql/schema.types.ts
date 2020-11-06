@@ -17,7 +17,7 @@ export interface Query {
   self?: Maybe<User>
   surveys: Array<Survey>
   survey?: Maybe<Survey>
-  classes?: Maybe<Classes>
+  classes: Array<Maybe<Classes>>
 }
 
 export interface QuerySurveyArgs {
@@ -25,7 +25,7 @@ export interface QuerySurveyArgs {
 }
 
 export interface QueryClassesArgs {
-  classId: Scalars['Int']
+  email: Scalars['String']
 }
 
 export interface Mutation {
@@ -116,6 +116,7 @@ export interface ClassInput {
   zoom: Scalars['String']
   startDate: Scalars['String']
   endDate: Scalars['String']
+  email: Scalars['String']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -197,11 +198,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>
   Int: ResolverTypeWrapper<Scalars['Int']>
+  String: ResolverTypeWrapper<Scalars['String']>
   Mutation: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Subscription: ResolverTypeWrapper<{}>
   User: ResolverTypeWrapper<User>
-  String: ResolverTypeWrapper<Scalars['String']>
   UserType: UserType
   Survey: ResolverTypeWrapper<Survey>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
@@ -215,11 +216,11 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Query: {}
   Int: Scalars['Int']
+  String: Scalars['String']
   Mutation: {}
   Boolean: Scalars['Boolean']
   Subscription: {}
   User: User
-  String: Scalars['String']
   Survey: Survey
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
@@ -241,10 +242,10 @@ export type QueryResolvers<
     RequireFields<QuerySurveyArgs, 'surveyId'>
   >
   classes?: Resolver<
-    Maybe<ResolversTypes['Classes']>,
+    Array<Maybe<ResolversTypes['Classes']>>,
     ParentType,
     ContextType,
-    RequireFields<QueryClassesArgs, 'classId'>
+    RequireFields<QueryClassesArgs, 'email'>
   >
 }
 

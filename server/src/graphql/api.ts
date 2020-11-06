@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
+import { getRepository } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Classes } from '../entities/Classes'
 import { Survey } from '../entities/Survey'
@@ -28,7 +29,14 @@ export const graphqlRoot: Resolvers<Context> = {
     self: (_, args, ctx) => ctx.user,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
-    classes: async (_, { classId }) => ((await Classes.findOne({ where: { id: classId } })) || null) as any,
+    //classes: async (_, { email }) => ((await Classes.find({ where: { id: email } })) || null) as any,
+    classes: async (_, { email }) => (
+      await getRepository(Classes)
+        .createQueryBuilder('classes')
+        .leftJoinAndSelect('classes.user', 'user')
+        .where('user.email = :email', { email })
+        .getMany()
+    ) as any,
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -54,7 +62,12 @@ export const graphqlRoot: Resolvers<Context> = {
       return survey
     },
     createClass: async (_, { input }) => {
-      const { title, rRule, zoom, startDate, endDate } = input
+      const { title, rRule, zoom, startDate, endDate, email } = input
+
+      const user = await User.findOne({ where: { email: email } })
+      if (!user) {
+        return false
+      }
 
       const addClass = new Classes()
       addClass.title = title
@@ -62,6 +75,7 @@ export const graphqlRoot: Resolvers<Context> = {
       addClass.zoom = zoom
       addClass.startDate = new Date(startDate)
       addClass.endDate = new Date(endDate)
+      addClass.user = user
       await addClass.save()
 
       return true
