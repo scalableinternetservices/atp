@@ -1,0 +1,1 @@
+insert into `classes` (`title`, `rRule`, `zoom`, `startDate`, `endDate`, `userId`) values ('Amazon', 'FREQ=WEEKLY;BYDAY=TU,TH', 'https://www.amazon.com', '2020-11-03 09:00', '2020-11-03 10:50', 1);
