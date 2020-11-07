@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client'
 import {
   Fab,
   FormControlLabel,
@@ -14,13 +15,15 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import * as React from 'react'
+import { FetchFriends, FetchFriendsVariables } from '../../../graphql/query.gen'
+import { fetchFriends } from '../db/fetchFriends'
 function showFriend(event: React.ChangeEvent<{}>, checked: boolean) {
   /* show friends calendar */
 }
 
-function createFriend(username: string) {
-  return { username }
-}
+// function createFriend(username: string) {
+//   return { username }
+// }
 
 const useStyles = makeStyles({
   table: {
@@ -29,16 +32,16 @@ const useStyles = makeStyles({
 })
 
 export function Friends({ email }: { email: string }) {
-  const sample = [createFriend('adgrf'), createFriend('grifw')]
-  // const { loading, data } = useQuery<FetchFriends, FetchClassesVariables>(fetchClasses, { variables: { email } })
-  // if (loading) {
-  //   return <div>loading...</div>
-  // }
-  // if (!data) {
-  //   return <div>no classes</div>
-  // }
+  // const sample = [createFriend('adgrf'), createFriend('grifw')]
+  const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, { variables: { email } })
+  if (loading) {
+    return <div>loading...</div>
+  }
+  if (!data || !data.friends) {
+    return <div>no friends</div>
+  }
 
-  const [friends, setFriends] = React.useState(sample)
+  // const [friends, setFriends] = React.useState(sample)
 
   const usernameInput = React.createRef<HTMLInputElement>()
   const classes = useStyles()
@@ -58,8 +61,8 @@ export function Friends({ email }: { email: string }) {
                   aria-label="add"
                   size="small"
                   onClick={() => {
-                    const newFriends = [...friends, createFriend(usernameInput.current!.value)]
-                    setFriends(newFriends)
+                    // const newFriends = [...friends, createFriend(usernameInput.current!.value)]
+                    // setFriends(newFriends)
                     usernameInput.current!.value = ''
                   }}
                 >
@@ -69,10 +72,10 @@ export function Friends({ email }: { email: string }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {friends.map(friend => (
-              <TableRow key={friend.username}>
+            {data.friends.friends.map((f, i) => (
+              <TableRow key={i}>
                 <TableCell component="th" scope="row">
-                  {friend.username}
+                  {f}
                 </TableCell>
                 <TableCell align="right">
                   {' '}
@@ -80,7 +83,7 @@ export function Friends({ email }: { email: string }) {
                     control={<Switch />}
                     label=""
                     onChange={showFriend}
-                    id={'checkbox' + friend.username}
+                    id={'checkbox' + f}
                   ></FormControlLabel>
                 </TableCell>
               </TableRow>
