@@ -28,8 +28,15 @@ const useStyles = makeStyles({
   },
 })
 
-export function Friends() {
+export function Friends({ email }: { email: string }) {
   const sample = [createFriend('adgrf'), createFriend('grifw')]
+  // const { loading, data } = useQuery<FetchFriends, FetchClassesVariables>(fetchClasses, { variables: { email } })
+  // if (loading) {
+  //   return <div>loading...</div>
+  // }
+  // if (!data) {
+  //   return <div>no classes</div>
+  // }
 
   const [friends, setFriends] = React.useState(sample)
 

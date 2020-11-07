@@ -13,7 +13,6 @@ import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { FetchClasses, FetchClassesVariables } from '../../../graphql/query.gen'
-import { UserContext } from '../../auth/user'
 import { fetchClasses } from '../db/fetchClasses'
 
 const resources = [
@@ -79,12 +78,7 @@ function commitChanges(changes: ChangeSet) {
   }
 }
 
-export function Calendar() {
-  const user = React.useContext(UserContext)
-  const email = user.getEmail()
-  if (!email) {
-    return <div>please login</div>
-  }
+export function Calendar({ email }: { email: string }) {
   const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
   if (loading) {
     return <div>loading...</div>

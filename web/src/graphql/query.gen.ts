@@ -52,6 +52,29 @@ export interface FetchClassesVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchFriends
+// ====================================================
+
+export interface FetchFriends_friends {
+  __typename: "Friends";
+  id: number;
+  friends: (string | null)[];
+}
+
+export interface FetchFriends {
+  friends: FetchFriends_friends | null;
+}
+
+export interface FetchFriendsVariables {
+  email: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -232,6 +255,21 @@ export interface Classes {
   zoom: string;
   startDate: string;
   endDate: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: Friends
+// ====================================================
+
+export interface Friends {
+  __typename: "Friends";
+  id: number;
+  friends: (string | null)[];
 }
 
 /* tslint:disable */
