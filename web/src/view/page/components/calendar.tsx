@@ -15,7 +15,6 @@ import * as React from 'react'
 import { FetchClasses, FetchClassesVariables } from '../../../graphql/query.gen'
 import { UserContext } from '../../auth/user'
 import { fetchClasses } from '../db/fetchClasses'
-// import { Classes } from '../../../../../server/src/entities/Classes'
 
 const resources = [
   {
