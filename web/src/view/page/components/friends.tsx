@@ -18,12 +18,15 @@ import * as React from 'react'
 import { FetchFriends, FetchFriendsVariables } from '../../../graphql/query.gen'
 import { fetchFriends } from '../db/fetchFriends'
 function showFriend(event: React.ChangeEvent<{}>, checked: boolean) {
-  /* show friends calendar */
+  // if (!checked) return []
+  // const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { id } })
+  // if (loading) {
+  //   return <div>loading...</div>
+  // }
+  // if (!data) {
+  //   return <div>no classes</div>
+  // }
 }
-
-// function createFriend(username: string) {
-//   return { username }
-// }
 
 const useStyles = makeStyles({
   table: {
@@ -32,14 +35,14 @@ const useStyles = makeStyles({
 })
 
 export function Friends({ email }: { email: string }) {
-  // const sample = [createFriend('adgrf'), createFriend('grifw')]
   const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, { variables: { email } })
+  let friends: (string | null)[]
   if (loading) {
     return <div>loading...</div>
   }
   if (!data || !data.friends) {
-    return <div>no friends</div>
-  }
+    friends = []
+  } else friends = data.friends.friends
 
   // const [friends, setFriends] = React.useState(sample)
 
@@ -72,19 +75,14 @@ export function Friends({ email }: { email: string }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.friends.friends.map((f, i) => (
+            {friends.map((f, i) => (
               <TableRow key={i}>
                 <TableCell component="th" scope="row">
                   {f}
                 </TableCell>
                 <TableCell align="right">
                   {' '}
-                  <FormControlLabel
-                    control={<Switch />}
-                    label=""
-                    onChange={showFriend}
-                    id={'checkbox' + f}
-                  ></FormControlLabel>
+                  <FormControlLabel control={<Switch />} label="" onChange={showFriend} id={f!}></FormControlLabel>
                 </TableCell>
               </TableRow>
             ))}
@@ -94,80 +92,3 @@ export function Friends({ email }: { email: string }) {
     </FormGroup>
   )
 }
-
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650,
-//   },
-// })
-
-// interface EventEntry {
-//   name: string
-//   zoom: string
-// }
-
-// interface RowsProps {
-//   entries: EventEntry[]
-//   onAdd(name: string, zoom: string): void
-// }
-
-// export function Rows(prop: RowsProps) {
-//   const classes = useStyles()
-//   const classNameInput = React.createRef<HTMLInputElement>()
-//   const zoomLinkInput = React.createRef<HTMLInputElement>()
-//   return (
-//     <React.Fragment>
-//       <TableContainer component={Paper}>
-//         <Table className={classes.table} aria-label="simple table">
-//           <TableHead>
-//             <TableRow>
-//               <TableCell>Class Name</TableCell>
-//               <TableCell></TableCell>
-//               <TableCell align="right">Zoom Link</TableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {prop.entries.map(row => (
-//               <TableRow key={row.name}>
-//                 <TableCell component="th" scope="row">
-//                   {row.name}
-//                 </TableCell>
-//                 <TableCell></TableCell>
-//                 <TableCell align="right">
-//                   {' '}
-//                   <Link href={row.zoom}>Zoom</Link>
-//                 </TableCell>
-//               </TableRow>
-//             ))}
-//           </TableBody>
-//           <TableFooter>
-//             <TableRow>
-//               <TableCell>
-//                 <input ref={classNameInput} type="text" placeholder="Class Name" />
-//               </TableCell>
-//               <TableCell>
-//                 <input ref={zoomLinkInput} type="text" placeholder="Zoom Link" />
-//               </TableCell>
-//               <TableCell align="right">
-//                 <Button
-//                   variant="contained"
-//                   size="small"
-//                   onClick={() => {
-//                     const className = classNameInput.current!.value
-//                     const zoomLink = zoomLinkInput.current!.value
-//                     // const new_rows = [...rows, createData(className, zoomLink)]
-//                     prop.onAdd(className, zoomLink)
-//                     classNameInput.current!.value = ''
-//                     zoomLinkInput.current!.value = ''
-//                   }}
-//                 >
-//                   Add
-//                 </Button>
-//               </TableCell>
-//             </TableRow>
-//           </TableFooter>
-//         </Table>
-//       </TableContainer>
-//     </React.Fragment>
-//   )
-// }
