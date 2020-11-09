@@ -11,21 +11,31 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import * as React from 'react'
-import { FetchFriends, FetchFriendsVariables } from '../../../graphql/query.gen'
+import { FetchClasses, FetchClassesVariables, FetchFriends, FetchFriendsVariables } from '../../../graphql/query.gen'
+import { fetchClasses } from '../db/fetchClasses'
 import { fetchFriends } from '../db/fetchFriends'
-function showFriend(event: React.ChangeEvent<{}>, checked: boolean) {
-  // if (!checked) return []
-  // const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { id } })
-  // if (loading) {
-  //   return <div>loading...</div>
-  // }
-  // if (!data) {
-  //   return <div>no classes</div>
-  // }
+
+function handleChange(event: React.ChangeEvent<any>) {
+  const email = event.target.name
+  if (event.target.checked) {
+    // TODO: Show calendar... data fetch doesn't seem to work
+    const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
+    if (loading) {
+      alert('loading...')
+    }
+    if (!data) {
+      alert('no classes')
+    } else {
+      alert('found data!')
+    }
+  } else {
+    // TODO: Turn off calendar
+    alert('unchecked')
+  }
 }
 
 const useStyles = makeStyles({
@@ -82,7 +92,7 @@ export function Friends({ email }: { email: string }) {
                 </TableCell>
                 <TableCell align="right">
                   {' '}
-                  <FormControlLabel control={<Switch />} label="" onChange={showFriend} id={f!}></FormControlLabel>
+                  <FormControlLabel control={<Switch />} label="" onChange={handleChange} name={f!}></FormControlLabel>
                 </TableCell>
               </TableRow>
             ))}
