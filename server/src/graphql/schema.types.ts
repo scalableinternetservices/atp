@@ -18,7 +18,7 @@ export interface Query {
   surveys: Array<Survey>
   survey?: Maybe<Survey>
   classes: Array<Classes>
-  friends?: Maybe<Friends>
+  friends: Array<Friends>
 }
 
 export interface QuerySurveyArgs {
@@ -132,7 +132,7 @@ export interface ClassInput {
 export interface Friends {
   __typename?: 'Friends'
   id: Scalars['Int']
-  friends: Array<Maybe<Scalars['String']>>
+  friends: Scalars['String']
 }
 
 export interface FriendInput {
@@ -273,7 +273,7 @@ export type QueryResolvers<
     RequireFields<QueryClassesArgs, 'email'>
   >
   friends?: Resolver<
-    Maybe<ResolversTypes['Friends']>,
+    Array<ResolversTypes['Friends']>,
     ParentType,
     ContextType,
     RequireFields<QueryFriendsArgs, 'email'>
@@ -387,7 +387,7 @@ export type FriendsResolvers<
   ParentType extends ResolversParentTypes['Friends'] = ResolversParentTypes['Friends']
 > = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  friends?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>
+  friends?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 

@@ -46,13 +46,19 @@ const useStyles = makeStyles({
 
 export function Friends({ email }: { email: string }) {
   const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, { variables: { email } })
-  let friends: (string | null)[]
+  //let friends: (string | null)[]
   if (loading) {
     return <div>loading...</div>
   }
+  /*
   if (!data || !data.friends) {
     friends = []
   } else friends = data.friends.friends
+  */
+
+  if (!data) {
+   return <div>no friends</div>
+  }
 
   // const [friends, setFriends] = React.useState(sample)
 
@@ -85,14 +91,14 @@ export function Friends({ email }: { email: string }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {friends.map((f, i) => (
+            {data.friends.map((f, i) => (
               <TableRow key={i}>
                 <TableCell component="th" scope="row">
                   {f}
                 </TableCell>
                 <TableCell align="right">
                   {' '}
-                  <FormControlLabel control={<Switch />} label="" onChange={handleChange} name={f!}></FormControlLabel>
+                  <FormControlLabel control={<Switch />} label="" onChange={handleChange} name={f.friends!}></FormControlLabel>
                 </TableCell>
               </TableRow>
             ))}

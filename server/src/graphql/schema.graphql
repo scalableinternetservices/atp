@@ -21,7 +21,7 @@ type Query {
   surveys: [Survey!]!
   survey (surveyId: Int!): Survey
   classes (email: String!): [Classes!]!
-  friends (email: String!): Friends
+  friends (email: String!): [Friends!]!
 }
 
 type Mutation {
@@ -119,7 +119,7 @@ input ClassInput {
 
 type Friends {
   id: Int!
-  friends: [String]!
+  friends: String!
 }
 
 input FriendInput {

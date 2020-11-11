@@ -43,7 +43,7 @@ export const graphqlRoot: Resolvers<Context> = {
         .createQueryBuilder('friends')
         .leftJoinAndSelect('friends.user', 'user')
         .where('user.email = :email', { email })
-        .getOne()
+        .getMany()
     ) as any,
   },
   Mutation: {
@@ -96,18 +96,10 @@ export const graphqlRoot: Resolvers<Context> = {
         return false
       }
 
-      const currFriends = await Friends.findOne({where: { user: user }})
-
-      if (!currFriends) {
-        const newFriend = new Friends()
-        newFriend.user = user
-        newFriend.friends = [friend]
-        await newFriend.save()
-      }
-      else {
-        currFriends.friends.push(friend)
-        await currFriends.save()
-      }
+      const newFriend = new Friends()
+      newFriend.user = user
+      newFriend.friends = friend
+      await newFriend.save()
 
       return true
     },

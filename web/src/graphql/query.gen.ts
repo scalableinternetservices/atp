@@ -58,11 +58,11 @@ export interface FetchClassesVariables {
 export interface FetchFriends_friends {
   __typename: "Friends";
   id: number;
-  friends: (string | null)[];
+  friends: string;
 }
 
 export interface FetchFriends {
-  friends: FetchFriends_friends | null;
+  friends: FetchFriends_friends[];
 }
 
 export interface FetchFriendsVariables {
@@ -269,7 +269,7 @@ export interface Classes {
 export interface Friends {
   __typename: "Friends";
   id: number;
-  friends: (string | null)[];
+  friends: string;
 }
 
 /* tslint:disable */
