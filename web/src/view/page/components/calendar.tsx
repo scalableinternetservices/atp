@@ -7,13 +7,15 @@ import {
   ConfirmationDialog,
   Resources,
   Scheduler,
-  WeekView,
+  WeekView
 } from '@devexpress/dx-react-scheduler-material-ui'
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-import { FetchClasses, FetchClassesVariables } from '../../../graphql/query.gen'
+import { getApolloClient } from '../../../graphql/apolloClient'
+import { ClassInput, FetchClasses, FetchClassesVariables } from '../../../graphql/query.gen'
 import { fetchClasses } from '../db/fetchClasses'
+import { mutateClass } from '../db/mutateClasses'
 
 const resources = [
   {
@@ -63,8 +65,22 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }: any) => {
 
 function commitChanges(changes: ChangeSet) {
   const { added, changed, deleted } = changes
-  // TODO mutation
+
   if (added) {
+    const classInput: ClassInput = {
+      title: added.title || '',
+      rRule: added.rRule || '',
+      zoom: added.link || '',
+      startDate: added.startDate || '',
+      endDate: added.endDate || '',
+      email: userEmail || '',
+    }
+
+    mutateClass(getApolloClient(), classInput)
+      // TODO: Update calendar on success
+      .then(() => alert('Class added! Please refresh the page.'))
+      .catch((err: Error) => alert(err.message))
+
     // const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0
     // data = [...data, { id: startingAddedId, ...added }]
   }
@@ -78,7 +94,10 @@ function commitChanges(changes: ChangeSet) {
   }
 }
 
+let userEmail: string
+
 export function Calendar({ email }: { email: string }) {
+  userEmail = email
   const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
   if (loading) {
     return <div>loading...</div>

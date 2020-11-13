@@ -75,6 +75,23 @@ export interface FetchFriendsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddClass
+// ====================================================
+
+export interface AddClass {
+  createClass: boolean;
+}
+
+export interface AddClassVariables {
+  input: ClassInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -337,6 +354,15 @@ export interface SurveyQuestion {
 export enum UserType {
   ADMIN = "ADMIN",
   USER = "USER",
+}
+
+export interface ClassInput {
+  title: string;
+  rRule: string;
+  zoom: string;
+  startDate: string;
+  endDate: string;
+  email: string;
 }
 
 export interface SurveyInput {
