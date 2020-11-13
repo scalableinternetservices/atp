@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import { ChangeSet, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler'
 import {
   AppointmentForm,
@@ -13,8 +12,7 @@ import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { getApolloClient } from '../../../graphql/apolloClient'
-import { ClassInput, FetchClasses, FetchClassesVariables } from '../../../graphql/query.gen'
-import { fetchClasses } from '../db/fetchClasses'
+import { ClassInput, FetchClasses_classes } from '../../../graphql/query.gen'
 import { mutateClass } from '../db/mutateClasses'
 
 const resources = [
@@ -67,6 +65,9 @@ function commitChanges(changes: ChangeSet) {
   const { added, changed, deleted } = changes
 
   if (added) {
+    // TODO: get email of user
+    const userEmail = 'rothfels@cs.ucla.edu'
+
     const classInput: ClassInput = {
       title: added.title || '',
       rRule: added.rRule || '',
@@ -94,24 +95,13 @@ function commitChanges(changes: ChangeSet) {
   }
 }
 
-let userEmail: string
-
-export function Calendar({ email }: { email: string }) {
-  userEmail = email
-  const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
-  if (loading) {
-    return <div>loading...</div>
-  }
-  // if (!data || data.classes.length === 0) {
-  if (!data) {
-    return <div>no classes</div>
-  }
+export function Calendar({ classes, friends }: { classes: FetchClasses_classes[]; friends: string[] }) {
   return (
     <React.Fragment>
       <Paper>
         <Scheduler
           height={600}
-          data={data.classes.map((c, i) => ({
+          data={classes.map((c, i) => ({
             startDate: new Date(Number(c.startDate)),
             endDate: new Date(Number(c.endDate)),
             title: c.title,

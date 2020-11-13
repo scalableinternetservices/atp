@@ -38,12 +38,19 @@ export const graphqlRoot: Resolvers<Context> = {
         .where('user.email = :email', { email })
         .getMany()
     ) as any,
+    friendsClasses: async (_, { emails }) => (
+      await getRepository(Classes)
+        .createQueryBuilder('classes')
+        .leftJoinAndSelect('classes.user', 'user')
+        .where('user.email IN (:emails)', { emails })
+        .getMany()
+    ) as any,
     friends: async (_, { email }) => (
       await getRepository(Friends)
         .createQueryBuilder('friends')
         .leftJoinAndSelect('friends.user', 'user')
         .where('user.email = :email', { email })
-        .getOne()
+        .getMany()
     ) as any,
   },
   Mutation: {
@@ -96,18 +103,10 @@ export const graphqlRoot: Resolvers<Context> = {
         return false
       }
 
-      const currFriends = await Friends.findOne({where: { user: user }})
-
-      if (!currFriends) {
-        const newFriend = new Friends()
-        newFriend.user = user
-        newFriend.friends = [friend]
-        await newFriend.save()
-      }
-      else {
-        currFriends.friends.push(friend)
-        await currFriends.save()
-      }
+      const newFriend = new Friends()
+      newFriend.user = user
+      newFriend.friends = friend
+      await newFriend.save()
 
       return true
     },
