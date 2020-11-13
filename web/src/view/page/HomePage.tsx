@@ -1,17 +1,21 @@
+import { useQuery } from '@apollo/client'
 import Table from '@material-ui/core/Table'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
+import { FetchClasses, FetchClassesVariables, FetchClasses_classes } from '../../graphql/query.gen'
 import { UserContext } from '../auth/user'
 import { AppRouteParams } from '../nav/route'
 import { Calendar } from './components/calendar'
 import { Friends } from './components/friends'
+import { fetchClasses } from './db/fetchClasses'
 import { Page } from './Page'
 
 interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
 export function HomePage(props: HomePageProps) {
+  // get user's classes
   const user = React.useContext(UserContext)
   const email = user.getEmail()
   if (!email) {
@@ -23,17 +27,43 @@ export function HomePage(props: HomePageProps) {
       </React.Fragment>
     )
   }
+  const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
+  if (loading) {
+    return <div>loading...</div>
+  }
+  let classes: FetchClasses_classes[] = []
+  if (!data) {
+  } else classes = data.classes
+
+  // get friends' classes as switch toggles
+  const tmp: string[] = []
+  const [friends, setFriends] = React.useState(tmp)
+  const handleChange = (event: React.ChangeEvent<any>) => {
+    const email = event.target.name
+    if (event.target.checked) {
+      setFriends([...friends, email])
+      // useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
+      // if (!loading && data) classes = [...classes, ...data.classes]
+    } else {
+      alert(email + ' unchecked')
+      const index = friends.indexOf(email, 0)
+      if (index > -1) {
+        friends.splice(index, 1)
+        setFriends(friends)
+      }
+    }
+  }
   return (
     <React.Fragment>
       <Page>
         <Table>
           <TableRow>
             <TableCell style={{ verticalAlign: 'top' }}>
-              <Friends email={email} />
+              <Friends email={email} handleChange={handleChange} />
             </TableCell>
             <TableCell>
               {' '}
-              <Calendar email={email} />{' '}
+              <Calendar classes={classes} friends={friends} />{' '}
             </TableCell>
           </TableRow>
         </Table>
