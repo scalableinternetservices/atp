@@ -21,6 +21,7 @@ type Query {
   surveys: [Survey!]!
   survey (surveyId: Int!): Survey
   classes (email: String!): [Classes!]!
+  friendsClasses (emails: [String!]!): [Classes!]!
   friends (email: String!): [Friends!]!
 }
 

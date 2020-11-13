@@ -38,6 +38,13 @@ export const graphqlRoot: Resolvers<Context> = {
         .where('user.email = :email', { email })
         .getMany()
     ) as any,
+    friendsClasses: async (_, { emails }) => (
+      await getRepository(Classes)
+        .createQueryBuilder('classes')
+        .leftJoinAndSelect('classes.user', 'user')
+        .where('user.email IN (:emails)', { emails })
+        .getMany()
+    ) as any,
     friends: async (_, { email }) => (
       await getRepository(Friends)
         .createQueryBuilder('friends')
