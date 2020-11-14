@@ -36,20 +36,18 @@ export function HomePage(props: HomePageProps) {
   } else classes = data.classes
 
   // get friends' classes as switch toggles
+  const toggle = true
   const tmp: string[] = []
   const [friends, setFriends] = React.useState(tmp)
   const handleChange = (event: React.ChangeEvent<any>) => {
-    const email = event.target.name
+    const friendEmail = event.target.name
     if (event.target.checked) {
-      setFriends([...friends, email])
-      // useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
-      // if (!loading && data) classes = [...classes, ...data.classes]
+      setFriends([...friends, friendEmail])
     } else {
-      alert(email + ' unchecked')
-      const index = friends.indexOf(email, 0)
+      const index = friends.indexOf(friendEmail, 0)
       if (index > -1) {
         friends.splice(index, 1)
-        setFriends(friends)
+        setFriends([...friends])
       }
     }
   }
@@ -63,7 +61,11 @@ export function HomePage(props: HomePageProps) {
             </TableCell>
             <TableCell>
               {' '}
-              <Calendar classes={classes} friends={friends} />{' '}
+              <Calendar
+                classes={classes}
+                email={friends.length ? friends[friends.length - 1] : null}
+                toggle={toggle}
+              />{' '}
             </TableCell>
           </TableRow>
         </Table>

@@ -19,3 +19,12 @@ export const fetchClasses = gql`
   }
   ${fragmentClasses}
 `
+
+// export const fetchFriendsClasses = gql`
+//   query FetchFriendsClasses($emails: [String!]!) {
+//     classes(emails: $emails) {
+//       ...Classes
+//     }
+//   }
+//   ${fragmentClasses}
+// `
