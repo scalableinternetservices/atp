@@ -12,8 +12,10 @@ import {
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-import { FetchClasses, FetchClassesVariables, FetchClasses_classes } from '../../../graphql/query.gen'
+import { getApolloClient } from '../../../graphql/apolloClient'
+import { ClassInput, FetchClasses, FetchClassesVariables, FetchClasses_classes } from '../../../graphql/query.gen'
 import { fetchClasses } from '../db/fetchClasses'
+import { mutateClass } from '../db/mutateClasses'
 
 const resources = [
   {
@@ -63,8 +65,25 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }: any) => {
 
 function commitChanges(changes: ChangeSet) {
   const { added, changed, deleted } = changes
-  // TODO mutation
+
   if (added) {
+    // TODO: get email of user
+    const userEmail = 'rothfels@cs.ucla.edu'
+
+    const classInput: ClassInput = {
+      title: added.title || '',
+      rRule: added.rRule || '',
+      zoom: added.link || '',
+      startDate: added.startDate || '',
+      endDate: added.endDate || '',
+      email: userEmail || '',
+    }
+
+    mutateClass(getApolloClient(), classInput)
+      // TODO: Update calendar on success
+      .then(() => alert('Class added! Please refresh the page.'))
+      .catch((err: Error) => alert(err.message))
+
     // const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0
     // data = [...data, { id: startingAddedId, ...added }]
   }
