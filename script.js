@@ -31,12 +31,26 @@ export default function () {
 }
 */
 
-// Test class fetching
+// // Test class fetching
+// export default function () {
+//   //sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"FetchClasses","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchClasses($email: String!) {\\n  classes(email: $email) {\\n    ...Classes\\n    __typename\\n  }\\n}\\n\\nfragment Classes on Classes {\\n  id\\n  title\\n  rRule\\n  zoom\\n  startDate\\n  endDate\\n  __typename\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+// }
+
+// Test friend fetching
 export default function () {
   //sleep(1)
 	http.post(
       'http://localhost:3000/graphql',
-      '{"operationName":"FetchClasses","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchClasses($email: String!) {\\n  classes(email: $email) {\\n    ...Classes\\n    __typename\\n  }\\n}\\n\\nfragment Classes on Classes {\\n  id\\n  title\\n  rRule\\n  zoom\\n  startDate\\n  endDate\\n  __typename\\n}\\n"}',
+      '{"operationName":"FetchFriends","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchFriends($email: String!) {\\n  friends(email: $email) {\\n    ...Friends\\n    __typename\\n  }\\n}\\n\\nfragment Friends on Friends {\\n  id\\n  friends\\n   __typename\\n}\\n"}',
 			{
 				headers: {
 					'Content-Type': 'application/json',
