@@ -1,6 +1,6 @@
 import http from 'k6/http'
 import { Counter, Rate } from 'k6/metrics'
-import sleep from 'k6'
+import {sleep} from 'k6'
 
 export const options = {
 	scenarios: {
@@ -34,9 +34,9 @@ export default function () {
 // Test class fetching
 export default function () {
   //sleep(1)
-	http.get(
+	http.post(
       'http://localhost:3000/graphql',
-      '{"operationName":"FetchClasses","variables":{"email":"g.jikeyu@gmail.com"},"query":"query FetchClasses($email: String!) {\n  classes(email: $email) {\n    ...Classes\n    __typename\n  }\n}\n\nfragment Classes on Classes {\n  id\n  title\n  rRule\n  zoom\n  startDate\n  endDate\n  __typename\n}\n"}',
+      '{"operationName":"FetchClasses","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchClasses($email: String!) {\\n  classes(email: $email) {\\n    ...Classes\\n    __typename\\n  }\\n}\\n\\nfragment Classes on Classes {\\n  id\\n  title\\n  rRule\\n  zoom\\n  startDate\\n  endDate\\n  __typename\\n}\\n"}',
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -44,3 +44,17 @@ export default function () {
 			}
     )
 }
+
+// // Test add class
+// export default function () {
+//   //sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+// }

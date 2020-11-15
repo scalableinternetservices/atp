@@ -34,6 +34,7 @@ type Mutation {
 
   createClass (input: ClassInput!): Boolean!
   addFriend (input: FriendInput!): Boolean!
+  removeFriend (input: FriendInput!): Boolean!
 }
 
 type Subscription {

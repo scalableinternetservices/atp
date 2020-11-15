@@ -44,6 +44,7 @@ export interface Mutation {
   nextSurveyQuestion?: Maybe<Survey>
   createClass: Scalars['Boolean']
   addFriend: Scalars['Boolean']
+  removeFriend: Scalars['Boolean']
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -59,6 +60,10 @@ export interface MutationCreateClassArgs {
 }
 
 export interface MutationAddFriendArgs {
+  input: FriendInput
+}
+
+export interface MutationRemoveFriendArgs {
   input: FriendInput
 }
 
@@ -318,6 +323,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationAddFriendArgs, 'input'>
+  >
+  removeFriend?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveFriendArgs, 'input'>
   >
 }
 

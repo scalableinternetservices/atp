@@ -110,6 +110,23 @@ export const graphqlRoot: Resolvers<Context> = {
 
       return true
     },
+    removeFriend: async (_, { input }) => {
+      const { email, friend } = input
+
+      const user = await User.findOne({ where: { email: email } })
+      if (!user) {
+        return false
+      }
+
+      const friendRem = await Friends.findOne({ where: { user: user, friends: friend } })
+      if (!friendRem) {
+        return false
+      }
+
+      await friendRem.remove()
+
+      return true
+    },
   },
   Subscription: {
     surveyUpdates: {
