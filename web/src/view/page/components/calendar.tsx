@@ -7,7 +7,7 @@ import {
   ConfirmationDialog,
   Resources,
   Scheduler,
-  WeekView,
+  WeekView
 } from '@devexpress/dx-react-scheduler-material-ui'
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
@@ -63,13 +63,10 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }: any) => {
   )
 }
 
-function commitChanges(changes: ChangeSet) {
+function commitChanges(userEmail: string, changes: ChangeSet) {
   const { added, changed, deleted } = changes
 
   if (added) {
-    // TODO: get email of user
-    const userEmail = 'rothfels@cs.ucla.edu'
-
     const classInput: ClassInput = {
       title: added.title || '',
       rRule: added.rRule || '',
@@ -110,6 +107,9 @@ interface EmailMap {
 
 export function Calendar(prop: CalendarProps) {
   const { userEmail, classes, friendEmail, toggle } = prop
+
+  const handleClassChange = (changes: ChangeSet) => commitChanges(userEmail, changes)
+
   const record: EmailMap = {}
   record['user'] = [0, classes.length]
   let classesList = classes
@@ -145,7 +145,7 @@ export function Calendar(prop: CalendarProps) {
           }))}
         >
           <WeekView startDayHour={8} endDayHour={20} cellDuration={60} />
-          <EditingState onCommitChanges={commitChanges} />
+          <EditingState onCommitChanges={handleClassChange} />
           <Appointments appointmentComponent={Appointment} />
           <IntegratedEditing />
           <ConfirmationDialog />
