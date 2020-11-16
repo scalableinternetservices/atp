@@ -62,8 +62,9 @@ export function HomePage(props: HomePageProps) {
             <TableCell>
               {' '}
               <Calendar
+                userEmail={email}
                 classes={classes}
-                email={friends.length ? friends[friends.length - 1] : null}
+                friendEmail={friends.length ? friends[friends.length - 1] : null}
                 toggle={toggle}
               />{' '}
             </TableCell>
