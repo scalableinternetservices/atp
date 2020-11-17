@@ -150,7 +150,7 @@ export function Calendar(prop: CalendarProps) {
           <IntegratedEditing />
           <ConfirmationDialog />
           <Resources data={resources} />
-          <AppointmentTooltip visible={false} />
+          <AppointmentTooltip showDeleteButton={true} />
           <AppointmentForm basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor} messages={messages} />
         </Scheduler>
       </Paper>

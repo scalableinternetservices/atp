@@ -11,12 +11,14 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import * as React from 'react'
-import { FetchFriends, FetchFriendsVariables, FetchFriends_friends } from '../../../graphql/query.gen'
+import { getApolloClient } from '../../../graphql/apolloClient'
+import { FetchFriends, FetchFriendsVariables, FetchFriends_friends, FriendInput } from '../../../graphql/query.gen'
 import { fetchFriends } from '../db/fetchFriends'
+import { mutateFriend } from '../db/mutateFriends'
 
 const useStyles = makeStyles({
   table: {
@@ -27,6 +29,18 @@ const useStyles = makeStyles({
 interface FriendsProps {
   email: string
   handleChange(event: React.ChangeEvent<any>): void
+}
+
+function addFriend(friendEmail: string, userEmail: string) {
+  const friendInput: FriendInput = {
+    friend: friendEmail || '',
+    email: userEmail || '',
+  }
+
+  mutateFriend(getApolloClient(), friendInput)
+    // TODO: just refresh the page for 'em
+    .then(() => alert('Friend added! Please refresh the page.'))
+    .catch((err: Error) => alert(err.message))
 }
 
 export function Friends(prop: FriendsProps) {
@@ -50,7 +64,6 @@ export function Friends(prop: FriendsProps) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {/* <TableCell align="left">Friends</TableCell> */}
               <TableCell>
                 <input ref={usernameInput} type="text" placeholder="Add friend..." />
               </TableCell>
@@ -60,8 +73,7 @@ export function Friends(prop: FriendsProps) {
                   aria-label="add"
                   size="small"
                   onClick={() => {
-                    // const newFriends = [...friends, createFriend(usernameInput.current!.value)]
-                    // setFriends(newFriends)
+                    addFriend(usernameInput.current!.value, email)
                     usernameInput.current!.value = ''
                   }}
                 >

@@ -92,6 +92,23 @@ export interface AddClassVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddFriend
+// ====================================================
+
+export interface AddFriend {
+  addFriend: boolean;
+}
+
+export interface AddFriendVariables {
+  input: FriendInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -362,6 +379,11 @@ export interface ClassInput {
   zoom: string;
   startDate: string;
   endDate: string;
+  email: string;
+}
+
+export interface FriendInput {
+  friend: string;
   email: string;
 }
 
