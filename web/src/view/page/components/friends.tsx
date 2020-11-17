@@ -38,9 +38,8 @@ function addFriend(friendEmail: string, userEmail: string) {
   }
 
   mutateFriend(getApolloClient(), friendInput)
-    // TODO: just refresh the page for 'em
-    .then(() => alert('Friend added! Please refresh the page.'))
-    .catch((err: Error) => alert(err.message))
+    .then(() => window.location.reload())
+    .catch((err: Error) => alert('Uh oh, adding a friend failed with the following message: ' + err.message))
 }
 
 export function Friends(prop: FriendsProps) {

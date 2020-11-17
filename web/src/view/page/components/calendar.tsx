@@ -77,8 +77,7 @@ function commitChanges(userEmail: string, changes: ChangeSet) {
     }
 
     mutateClass(getApolloClient(), classInput)
-      // TODO: Update calendar on success
-      .then(() => alert('Class added! Please refresh the page.'))
+      .then(() => window.location.reload())
       .catch((err: Error) => alert(err.message))
 
     // const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0
