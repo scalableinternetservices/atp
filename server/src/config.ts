@@ -17,7 +17,7 @@ function isServiceEnabled(svc: AppService) {
 
 export const Config = {
   isProd: isProd(),
-  appName: process.env.APP_NAME || 'bespin',
+  appName: process.env.APP_NAME || 'atp',
   appserverPort: Number(process.env.APP_PORT || 3000),
   appserverTag: process.env.APPSERVER_TAG || 'local',
   honeyKey: process.env.HONEYCOMB_KEY || 'a0e65db4f5644105dd01ff99fc79c67b',

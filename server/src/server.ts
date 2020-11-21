@@ -1,6 +1,6 @@
 require('honeycomb-beeline')({
   writeKey: process.env.HONEYCOMB_KEY || 'a0e65db4f5644105dd01ff99fc79c67b',
-  dataset: process.env.APP_NAME || 'bespin',
+  dataset: process.env.APP_NAME || 'atp',
   serviceName: process.env.APPSERVER_TAG || 'local',
   enabledInstrumentations: ['express', 'mysql2', 'react-dom/server'],
   sampleRate: 10,
@@ -24,8 +24,8 @@ import { Session } from './entities/Session'
 import { User } from './entities/User'
 import { getSchema, graphqlRoot, pubsub } from './graphql/api'
 import { ConnectionManager } from './graphql/ConnectionManager'
-import { expressLambdaProxy } from './lambda/handler'
 import { UserType } from './graphql/schema.types'
+import { expressLambdaProxy } from './lambda/handler'
 import { renderApp } from './render'
 
 const server = new GraphQLServer({

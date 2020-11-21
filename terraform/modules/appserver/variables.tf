@@ -24,7 +24,7 @@ variable "services" {
 
 # Defaults
 variable "app_name" {
-  default = "bespin"
+  default = "atp"
 }
 variable "appserver_tag" {
   default = "app-web"
