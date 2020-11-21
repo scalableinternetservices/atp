@@ -3,7 +3,7 @@ require('honeycomb-beeline')({
   dataset: process.env.APP_NAME || 'atp',
   serviceName: process.env.APPSERVER_TAG || 'local',
   enabledInstrumentations: ['express', 'mysql2', 'react-dom/server'],
-  sampleRate: 10,
+  sampleRate: 100,
 })
 
 import assert from 'assert'
@@ -49,7 +49,7 @@ server.express.get('/', (req, res) => {
 
 server.express.get('/app/*', (req, res) => {
   console.log('GET /app')
-  renderApp(req, res)
+  renderApp(req, res, server.executableSchema)
 })
 
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000 // 30 days
