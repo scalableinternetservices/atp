@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import { makeStyles } from '@material-ui/core'
 import Table from '@material-ui/core/Table'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
@@ -14,7 +15,18 @@ import { Page } from './Page'
 
 interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
+const useStyles = makeStyles({
+  table: {
+    minWidth: 300,
+  },
+})
+
 export function HomePage(props: HomePageProps) {
+  const classesTable = useStyles()
+
+  const tmp: string[] = []
+  const [friends, setFriends] = React.useState(tmp)
+
   // get user's classes
   const user = React.useContext(UserContext)
   const email = user.getEmail()
@@ -37,8 +49,6 @@ export function HomePage(props: HomePageProps) {
 
   // get friends' classes as switch toggles
   const toggle = true
-  const tmp: string[] = []
-  const [friends, setFriends] = React.useState(tmp)
   const handleChange = (event: React.ChangeEvent<any>) => {
     const friendEmail = event.target.name
     if (event.target.checked) {
@@ -57,7 +67,7 @@ export function HomePage(props: HomePageProps) {
         <Table>
           <TableRow>
             <TableCell style={{ verticalAlign: 'top' }}>
-              <Friends email={email} handleChange={handleChange} />
+              <Friends email={email} handleChange={handleChange} classes={classesTable} />
             </TableCell>
             <TableCell>
               {' '}

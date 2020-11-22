@@ -3,7 +3,6 @@ import {
   Fab,
   FormControlLabel,
   FormGroup,
-  makeStyles,
   Paper,
   Switch,
   Table,
@@ -11,7 +10,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import * as React from 'react'
@@ -19,17 +18,6 @@ import { getApolloClient } from '../../../graphql/apolloClient'
 import { FetchFriends, FetchFriendsVariables, FetchFriends_friends, FriendInput } from '../../../graphql/query.gen'
 import { fetchFriends } from '../db/fetchFriends'
 import { mutateFriend } from '../db/mutateFriends'
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 300,
-  },
-})
-
-interface FriendsProps {
-  email: string
-  handleChange(event: React.ChangeEvent<any>): void
-}
 
 function addFriend(friendEmail: string, userEmail: string) {
   const friendInput: FriendInput = {
@@ -42,9 +30,15 @@ function addFriend(friendEmail: string, userEmail: string) {
     .catch((err: Error) => alert('Uh oh, adding a friend failed with the following message: ' + err.message))
 }
 
+interface FriendsProps {
+  email: string
+  handleChange(event: React.ChangeEvent<any>): void
+  classes: Record<'table', string>
+}
+
 export function Friends(prop: FriendsProps) {
   let friends: FetchFriends_friends[] = []
-  const { email, handleChange } = prop
+  const { email, handleChange, classes } = prop
   const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, { variables: { email } })
 
   if (loading) {
@@ -53,10 +47,7 @@ export function Friends(prop: FriendsProps) {
   if (!data || !data.friends) {
   } else friends = data.friends
 
-  // const [friends, setFriends] = React.useState(sample)
-
   const usernameInput = React.createRef<HTMLInputElement>()
-  const classes = useStyles()
   return (
     <FormGroup>
       <TableContainer component={Paper}>
