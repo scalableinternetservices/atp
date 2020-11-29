@@ -1,0 +1,14 @@
+{
+  "operationName": "AddClass",
+  "variables": {
+    "input": {
+      "title": "Test",
+      "rRule": "RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE",
+      "zoom": "https://www.amazon.com",
+      "startDate": "2020-11-09T21:00:00.000Z",
+      "endDate": "2020-11-09T22:00:00.000Z",
+      "email": "rothfels@cs.ucla.edu"
+    }
+  },
+  "query": "mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"
+}

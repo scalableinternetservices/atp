@@ -1,0 +1,5 @@
+{
+  "operationName": "FetchFriends",
+  "variables": { "email": "rothfels@cs.ucla.edu" },
+  "query": "query FetchFriends($email: String!) {\n  friends(email: $email) {\n    ...Friends\n    __typename\n  }\n}\n\nfragment Friends on Friends {\n  id\n  friends\n   __typename\n}\n"
+}
