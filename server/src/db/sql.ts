@@ -24,7 +24,7 @@ export async function initORM() {
     logging: false,
     entities: [User, Session, Survey, SurveyQuestion, SurveyAnswer, Classes, Friends],
     extra: {
-      connectionLimit: 5,
+      connectionLimit: 64,
     },
   })
 }

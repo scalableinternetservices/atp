@@ -3,7 +3,7 @@ require('honeycomb-beeline')({
   dataset: process.env.APP_NAME || 'atp',
   serviceName: process.env.APPSERVER_TAG || 'local',
   enabledInstrumentations: ['express', 'mysql2', 'react-dom/server'],
-  sampleRate: 100,
+  sampleRate: 10,
 })
 
 import assert from 'assert'
