@@ -4,6 +4,7 @@ import path from 'path'
 import { getRepository } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Classes } from '../entities/Classes'
+import { Exam } from '../entities/Exam'
 import { Friends } from '../entities/Friends'
 import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
@@ -51,6 +52,9 @@ export const graphqlRoot: Resolvers<Context> = {
         .leftJoinAndSelect('friends.user', 'user')
         .where('user.email = :email', { email })
         .getMany()
+    ) as any,
+    exams: async (_, { email }) => (
+      await Exam.find({ where: { email: email } })
     ) as any,
   },
   Mutation: {
@@ -124,6 +128,19 @@ export const graphqlRoot: Resolvers<Context> = {
       }
 
       await friendRem.remove()
+
+      return true
+    },
+    addExam: async (_, { input }) => {
+      const { title, email, type, date } = input
+
+      const addExam = new Exam()
+      addExam.title = title
+      addExam.email = email
+      addExam.type = type
+      addExam.date = new Date(date)
+
+      await addExam.save()
 
       return true
     },

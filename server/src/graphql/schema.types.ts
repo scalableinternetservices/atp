@@ -20,6 +20,7 @@ export interface Query {
   classes: Array<Classes>
   friendsClasses: Array<Classes>
   friends: Array<Friends>
+  exams: Array<Exam>
 }
 
 export interface QuerySurveyArgs {
@@ -38,6 +39,10 @@ export interface QueryFriendsArgs {
   email: Scalars['String']
 }
 
+export interface QueryExamsArgs {
+  email: Scalars['String']
+}
+
 export interface Mutation {
   __typename?: 'Mutation'
   answerSurvey: Scalars['Boolean']
@@ -45,6 +50,7 @@ export interface Mutation {
   createClass: Scalars['Boolean']
   addFriend: Scalars['Boolean']
   removeFriend: Scalars['Boolean']
+  addExam: Scalars['Boolean']
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -65,6 +71,10 @@ export interface MutationAddFriendArgs {
 
 export interface MutationRemoveFriendArgs {
   input: FriendInput
+}
+
+export interface MutationAddExamArgs {
+  input: ExamInput
 }
 
 export interface Subscription {
@@ -148,6 +158,22 @@ export interface Friends {
 export interface FriendInput {
   friend: Scalars['String']
   email: Scalars['String']
+}
+
+export interface Exam {
+  __typename?: 'Exam'
+  id: Scalars['Int']
+  email: Scalars['String']
+  title: Scalars['String']
+  type: Scalars['String']
+  date: Scalars['String']
+}
+
+export interface ExamInput {
+  email: Scalars['String']
+  title: Scalars['String']
+  type: Scalars['String']
+  date: Scalars['String']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -243,6 +269,8 @@ export type ResolversTypes = {
   ClassInput: ClassInput
   Friends: ResolverTypeWrapper<Friends>
   FriendInput: FriendInput
+  Exam: ResolverTypeWrapper<Exam>
+  ExamInput: ExamInput
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -262,6 +290,8 @@ export type ResolversParentTypes = {
   ClassInput: ClassInput
   Friends: Friends
   FriendInput: FriendInput
+  Exam: Exam
+  ExamInput: ExamInput
 }
 
 export type QueryResolvers<
@@ -294,6 +324,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryFriendsArgs, 'email'>
   >
+  exams?: Resolver<Array<ResolversTypes['Exam']>, ParentType, ContextType, RequireFields<QueryExamsArgs, 'email'>>
 }
 
 export type MutationResolvers<
@@ -330,6 +361,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRemoveFriendArgs, 'input'>
   >
+  addExam?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddExamArgs, 'input'>>
 }
 
 export type SubscriptionResolvers<
@@ -413,6 +445,18 @@ export type FriendsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
+export type ExamResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Exam'] = ResolversParentTypes['Exam']
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  date?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
@@ -423,6 +467,7 @@ export type Resolvers<ContextType = any> = {
   SurveyAnswer?: SurveyAnswerResolvers<ContextType>
   Classes?: ClassesResolvers<ContextType>
   Friends?: FriendsResolvers<ContextType>
+  Exam?: ExamResolvers<ContextType>
 }
 
 /**

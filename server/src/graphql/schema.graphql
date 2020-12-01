@@ -23,6 +23,7 @@ type Query {
   classes (email: String!): [Classes!]!
   friendsClasses (emails: [String!]!): [Classes!]!
   friends (email: String!): [Friends!]!
+  exams (email: String!): [Exam!]!
 }
 
 type Mutation {
@@ -35,6 +36,7 @@ type Mutation {
   createClass (input: ClassInput!): Boolean!
   addFriend (input: FriendInput!): Boolean!
   removeFriend (input: FriendInput!): Boolean!
+  addExam (input: ExamInput!): Boolean!
 }
 
 type Subscription {
@@ -127,4 +129,26 @@ type Friends {
 input FriendInput {
   friend: String!
   email: String!
+}
+
+type Exam {
+  id: Int!
+
+  email: String!
+
+  title: String!
+
+  type: String!
+
+  date: String!
+}
+
+input ExamInput {
+  email: String!
+
+  title: String!
+
+  type: String!
+
+  date: String!
 }

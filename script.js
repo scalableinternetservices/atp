@@ -31,7 +31,7 @@ export default function () {
 }
 */
 
-// // Test class fetching
+// Test class fetching
 // export default function () {
 //   //sleep(1)
 // 	http.post(
@@ -59,7 +59,7 @@ export default function () {
     )
 }
 
-// // Test add class
+// Test add class
 // export default function () {
 //   //sleep(1)
 // 	http.post(
