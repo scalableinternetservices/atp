@@ -7,7 +7,7 @@ import {
   ConfirmationDialog,
   Resources,
   Scheduler,
-  WeekView
+  WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
@@ -119,6 +119,7 @@ export function Calendar(prop: CalendarProps) {
         variables: { email },
       })
       if (!loading && data) {
+        console.log('friends class fetched!')
         record[email] = [classesList.length, data.classes.length]
         classesList = [...classesList, ...data.classes]
       }
@@ -127,7 +128,7 @@ export function Calendar(prop: CalendarProps) {
       classesList.splice(index, len)
     }
   }
-  console.log(classesList)
+  // console.log(classesList)
 
   return (
     <React.Fragment>

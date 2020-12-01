@@ -45,7 +45,10 @@ export function Friends(prop: FriendsProps) {
     return <div>loading...</div>
   }
   if (!data || !data.friends) {
-  } else friends = data.friends
+  } else {
+    console.log('user friends fetched!')
+    friends = data.friends
+  }
 
   const usernameInput = React.createRef<HTMLInputElement>()
   return (
