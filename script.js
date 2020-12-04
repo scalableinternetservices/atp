@@ -46,11 +46,25 @@ export default function () {
 // }
 
 // Test friend fetching
+// export default function () {
+//   //sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"FetchFriends","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchFriends($email: String!) {\\n  friends(email: $email) {\\n    ...Friends\\n    __typename\\n  }\\n}\\n\\nfragment Friends on Friends {\\n  id\\n  friends\\n   __typename\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+// }
+
+// Test add class
 export default function () {
   //sleep(1)
 	http.post(
       'http://localhost:3000/graphql',
-      '{"operationName":"FetchFriends","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchFriends($email: String!) {\\n  friends(email: $email) {\\n    ...Friends\\n    __typename\\n  }\\n}\\n\\nfragment Friends on Friends {\\n  id\\n  friends\\n   __typename\\n}\\n"}',
+      '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -59,12 +73,26 @@ export default function () {
     )
 }
 
-// Test add class
+// Test fetch exam
 // export default function () {
 //   //sleep(1)
 // 	http.post(
 //       'http://localhost:3000/graphql',
-//       '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
+//       '{"operationName":"FetchExams","variables":{"email":"jackbrewer7@yahoo.com"},"query":"query FetchExams($email: String!) {\\n  exams(email: $email) {\\n    ...Exams\\n    __typename\\n  }\\n}\\n\\nfragment Exams on Exam {\\n  id\\n  email\\n  title\\n  type\\n  date\\n  __typename\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+// }
+
+// Test add exams
+// export default function () {
+//   //sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"AddExam","variables":{"input":{"title":"Test","email":"jackbrewer7@yahoo.com","type":"Midterm","date":"2020-11-09T21:00:00.000Z"}},"query":"mutation AddExam($input: ExamInput!) {\\n  addExam(input: $input)\\n}\\n"}',
 // 			{
 // 				headers: {
 // 					'Content-Type': 'application/json',
