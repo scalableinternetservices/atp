@@ -52,6 +52,32 @@ export interface FetchClassesVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchExams
+// ====================================================
+
+export interface FetchExams_exams {
+  __typename: "Exam";
+  id: number;
+  email: string;
+  title: string;
+  type: string;
+  date: string;
+}
+
+export interface FetchExams {
+  exams: FetchExams_exams[];
+}
+
+export interface FetchExamsVariables {
+  email: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchFriends
 // ====================================================
 
@@ -84,6 +110,23 @@ export interface AddClass {
 
 export interface AddClassVariables {
   input: ClassInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: AddExam
+// ====================================================
+
+export interface AddExam {
+  addExam: boolean;
+}
+
+export interface AddExamVariables {
+  input: ExamInput;
 }
 
 /* tslint:disable */
@@ -297,6 +340,24 @@ export interface Classes {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: Exams
+// ====================================================
+
+export interface Exams {
+  __typename: "Exam";
+  id: number;
+  email: string;
+  title: string;
+  type: string;
+  date: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: Friends
 // ====================================================
 
@@ -380,6 +441,13 @@ export interface ClassInput {
   startDate: string;
   endDate: string;
   email: string;
+}
+
+export interface ExamInput {
+  email: string;
+  title: string;
+  type: string;
+  date: string;
 }
 
 export interface FriendInput {
