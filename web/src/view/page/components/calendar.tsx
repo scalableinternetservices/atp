@@ -7,7 +7,7 @@ import {
   ConfirmationDialog,
   Resources,
   Scheduler,
-  WeekView
+  WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import Paper from '@material-ui/core/Paper'
 // import { RouteComponentProps } from '@reach/router'
@@ -117,6 +117,7 @@ export function Calendar(prop: CalendarProps) {
     if (toggle) {
       const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, {
         variables: { email },
+        pollInterval: 1000,
       })
       if (!loading && data) {
         record[email] = [classesList.length, data.classes.length]

@@ -39,7 +39,10 @@ export function HomePage(props: HomePageProps) {
       </React.Fragment>
     )
   }
-  const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, { variables: { email } })
+  const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, {
+    variables: { email },
+    pollInterval: 1000,
+  })
   if (loading) {
     return <div>loading...</div>
   }

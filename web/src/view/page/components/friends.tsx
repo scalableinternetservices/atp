@@ -39,7 +39,10 @@ interface FriendsProps {
 export function Friends(prop: FriendsProps) {
   let friends: FetchFriends_friends[] = []
   const { email, handleChange, classes } = prop
-  const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, { variables: { email } })
+  const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, {
+    variables: { email },
+    pollInterval: 1000,
+  })
 
   if (loading) {
     return <div>loading...</div>
