@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
+import moment from 'moment'
 import path from 'path'
 import { getRepository } from 'typeorm'
 import { check } from '../../../common/src/util'
+import { redis } from '../db/redis'
 import { Classes } from '../entities/Classes'
 import { Exam } from '../entities/Exam'
 import { Friends } from '../entities/Friends'
@@ -14,9 +16,15 @@ import { Resolvers } from './schema.types'
 
 export const pubsub = new PubSub()
 
+const serialize = require('serialize-javascript')
+
 export function getSchema() {
   const schema = readFileSync(path.join(__dirname, 'schema.graphql'))
   return schema.toString()
+}
+
+function deserialize(serializedJavascript: any) {
+  return eval('(' + serializedJavascript + ')')
 }
 
 interface Context {
@@ -32,12 +40,30 @@ export const graphqlRoot: Resolvers<Context> = {
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     //classes: async (_, { email }) => ((await Classes.find({ where: { id: email } })) || null) as any,
-    classes: async (_, { email }) =>
-      (await getRepository(Classes)
-        .createQueryBuilder('classes')
-        .leftJoinAndSelect('classes.user', 'user')
-        .where('user.email = :email', { email })
-        .getMany()) as any,
+    classes: async (_, { email }) => {
+      const fetchClasses = async (email: string) =>
+        (await getRepository(Classes)
+          .createQueryBuilder('classes')
+          .leftJoinAndSelect('classes.user', 'user')
+          .where('user.email = :email', { email })
+          .getMany()) as any
+      let data: any
+      const redisCache = await redis.get(email)
+      if (redisCache) {
+        Date.prototype.toJSON = function () {
+          return moment(this).format()
+        }
+        data = deserialize(redisCache)
+        console.log(data)
+      } else {
+        data = await fetchClasses(email)
+        console.log(data)
+        console.log(serialize(data))
+        await redis.setex(email, 360, serialize(data))
+      }
+      return data
+    },
+
     friendsClasses: async (_, { emails }) =>
       (await getRepository(Classes)
         .createQueryBuilder('classes')

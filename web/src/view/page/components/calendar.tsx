@@ -132,7 +132,6 @@ export function Calendar(prop: CalendarProps) {
       classesList.splice(index, len)
     }
   }
-  console.log(classesList)
 
   return (
     <React.Fragment>
