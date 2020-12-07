@@ -95,7 +95,7 @@ function commitChanges(userEmail: string, changes: ChangeSet) {
 
 interface CalendarProps {
   userEmail: string
-  classes: FetchClasses_classes[]
+  classes: FetchClasses_classes[] | undefined
   friendEmail: string | null
   toggle: boolean
 }
@@ -107,6 +107,10 @@ interface EmailMap {
 export function Calendar(prop: CalendarProps) {
   const { userEmail, classes, friendEmail, toggle } = prop
 
+  if (classes === undefined) {
+    return <div>loading...</div>
+  }
+
   const handleClassChange = (changes: ChangeSet) => commitChanges(userEmail, changes)
 
   const record: EmailMap = {}
@@ -117,7 +121,7 @@ export function Calendar(prop: CalendarProps) {
     if (toggle) {
       const { loading, data } = useQuery<FetchClasses, FetchClassesVariables>(fetchClasses, {
         variables: { email },
-        pollInterval: 1000,
+        // pollInterval: 1000,
       })
       if (!loading && data) {
         record[email] = [classesList.length, data.classes.length]

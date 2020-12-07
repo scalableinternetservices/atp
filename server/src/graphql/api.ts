@@ -31,27 +31,24 @@ export const graphqlRoot: Resolvers<Context> = {
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     //classes: async (_, { email }) => ((await Classes.find({ where: { id: email } })) || null) as any,
-    classes: async (_, { email }) => (
-      await getRepository(Classes)
+    classes: async (_, { email }) =>
+      (await getRepository(Classes)
         .createQueryBuilder('classes')
         .leftJoinAndSelect('classes.user', 'user')
         .where('user.email = :email', { email })
-        .getMany()
-    ) as any,
-    friendsClasses: async (_, { emails }) => (
-      await getRepository(Classes)
+        .getMany()) as any,
+    friendsClasses: async (_, { emails }) =>
+      (await getRepository(Classes)
         .createQueryBuilder('classes')
         .leftJoinAndSelect('classes.user', 'user')
         .where('user.email IN (:emails)', { emails })
-        .getMany()
-    ) as any,
-    friends: async (_, { email }) => (
-      await getRepository(Friends)
+        .getMany()) as any,
+    friends: async (_, { email }) =>
+      (await getRepository(Friends)
         .createQueryBuilder('friends')
         .leftJoinAndSelect('friends.user', 'user')
         .where('user.email = :email', { email })
-        .getMany()
-    ) as any,
+        .getMany()) as any,
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -76,7 +73,7 @@ export const graphqlRoot: Resolvers<Context> = {
       ctx.pubsub.publish('SURVEY_UPDATE_' + surveyId, survey)
       return survey
     },
-    createClass: async (_, { input }) => {
+    createClass: async (_, { input }, ctx) => {
       const { title, rRule, zoom, startDate, endDate, email } = input
 
       const user = await User.findOne({ where: { email: email } })
@@ -92,6 +89,15 @@ export const graphqlRoot: Resolvers<Context> = {
       addClass.endDate = new Date(endDate)
       addClass.user = user
       await addClass.save()
+
+      const classes = check(
+        await getRepository(Classes)
+          .createQueryBuilder('classes')
+          .leftJoinAndSelect('classes.user', 'user')
+          .where('user.email = :email', { email })
+          .getMany()
+      )
+      ctx.pubsub.publish('CLASSES_UPDATE_' + email, classes)
 
       return true
     },
@@ -131,6 +137,10 @@ export const graphqlRoot: Resolvers<Context> = {
   Subscription: {
     surveyUpdates: {
       subscribe: (_, { surveyId }, context) => context.pubsub.asyncIterator('SURVEY_UPDATE_' + surveyId),
+      resolve: (payload: any) => payload,
+    },
+    classesUpdates: {
+      subscribe: (_, { email }, context) => context.pubsub.asyncIterator('CLASSES_UPDATE_' + email),
       resolve: (payload: any) => payload,
     },
   },

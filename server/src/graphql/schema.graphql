@@ -39,6 +39,7 @@ type Mutation {
 
 type Subscription {
   surveyUpdates (surveyId: Int!): Survey
+	classesUpdates (email: String!): [Classes!]!
 }
 
 type User {

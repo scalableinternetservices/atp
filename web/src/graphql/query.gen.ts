@@ -52,6 +52,33 @@ export interface FetchClassesVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: ClassesSubscription
+// ====================================================
+
+export interface ClassesSubscription_classesUpdates {
+  __typename: "Classes";
+  id: number;
+  title: string;
+  rRule: string;
+  zoom: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ClassesSubscription {
+  classesUpdates: ClassesSubscription_classesUpdates[];
+}
+
+export interface ClassesSubscriptionVariables {
+  email: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchFriends
 // ====================================================
 

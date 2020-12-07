@@ -41,7 +41,7 @@ export function Friends(prop: FriendsProps) {
   const { email, handleChange, classes } = prop
   const { loading, data } = useQuery<FetchFriends, FetchFriendsVariables>(fetchFriends, {
     variables: { email },
-    pollInterval: 1000,
+    // pollInterval: 1000,
   })
 
   if (loading) {
