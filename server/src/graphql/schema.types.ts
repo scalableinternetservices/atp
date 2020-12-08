@@ -80,10 +80,15 @@ export interface MutationAddExamArgs {
 export interface Subscription {
   __typename?: 'Subscription'
   surveyUpdates?: Maybe<Survey>
+  classesUpdates: Array<Classes>
 }
 
 export interface SubscriptionSurveyUpdatesArgs {
   surveyId: Scalars['Int']
+}
+
+export interface SubscriptionClassesUpdatesArgs {
+  email: Scalars['String']
 }
 
 export interface User {
@@ -374,6 +379,13 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType,
     RequireFields<SubscriptionSurveyUpdatesArgs, 'surveyId'>
+  >
+  classesUpdates?: SubscriptionResolver<
+    Array<ResolversTypes['Classes']>,
+    'classesUpdates',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionClassesUpdatesArgs, 'email'>
   >
 }
 
