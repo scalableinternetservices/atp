@@ -9,6 +9,7 @@ import { FetchClasses, FetchClassesVariables, FetchClasses_classes } from '../..
 import { UserContext } from '../auth/user'
 import { AppRouteParams } from '../nav/route'
 import { Calendar } from './components/calendar'
+import { Exams } from './components/exams'
 import { Friends } from './components/friends'
 import { fetchClasses } from './db/fetchClasses'
 import { Page } from './Page'
@@ -80,6 +81,7 @@ export function HomePage(props: HomePageProps) {
             </TableCell>
           </TableRow>
         </Table>
+        <Exams email={email} classes={classes} />
       </Page>
     </React.Fragment>
   )

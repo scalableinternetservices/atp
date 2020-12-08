@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client'
 import {
   Fab,
   FormGroup,
@@ -11,38 +12,70 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import * as React from 'react'
-// import { getApolloClient } from '../../../graphql/apolloClient'
-// import { FetchExams, FetchExamsVariables, FetchExams_exams, ExamInput } from '../../../graphql/query.gen'
-// import { fetchExams } from '../db/fetchExams'
-// import { mutateExams } from '../db/mutateExams'
+import { getApolloClient } from '../../../graphql/apolloClient'
+import {
+  ExamInput,
+  FetchClasses_classes,
+  FetchExams,
+  FetchExamsVariables,
+  FetchExams_exams
+} from '../../../graphql/query.gen'
+import { fetchExams } from '../db/fetchExams'
+import { mutateExam } from '../db/mutateExams'
 
 interface ExamsProps {
   email: string
-  handleChange(event: React.ChangeEvent<any>): void
-  classes: Record<'table', string>
+  classes: FetchClasses_classes[]
+}
+
+function addExam(examTitle: string, examType: string, examDate: string, userEmail: string) {
+  const examInput: ExamInput = {
+    email: userEmail || '',
+    title: examTitle || '',
+    type: examType || '',
+    date: examDate || '',
+  }
+
+  mutateExam(getApolloClient(), examInput)
+    .then(() => window.location.reload())
+    .catch((err: Error) => alert('Uh oh, adding an exam failed with the following message: ' + err.message))
 }
 
 export function Exams(prop: ExamsProps) {
-  /*
-  const exams: FetchExams_exams[] = []
-  const { email, handleChange, classes } = prop
+  let exams: FetchExams_exams[] = []
+  const { email, classes } = prop
   const { loading, data } = useQuery<FetchExams, FetchExamsVariables>(fetchExams, { variables: { email } })
 
   if (loading) {
     return <div>loading...</div>
   }
-  if (!data || !data.friends) {
-  } else friends = data.friends
-  */
-  // const examInput = React.createRef<HTMLInputElement>()
+  if (!data || !data.exams) {
+  } else exams = data.exams
+
+  const examClassInput = React.createRef<HTMLSelectElement>()
+  const examTypeInput = React.createRef<HTMLInputElement>()
+  const examDateInput = React.createRef<HTMLInputElement>()
   return (
     <FormGroup>
       <TableContainer component={Paper}>
-        <Table className={'PLACEHOLDER'} aria-label="simple table">
+        <Table className={'examsTable'} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>
-                <input type="text" placeholder="Add exam..." />
+                <select ref={examClassInput}>
+                  <option>Pick a class...</option>
+                  {classes.map((c, i) => (
+                    <option key={i} value={c.title}>
+                      {c.title}
+                    </option>
+                  ))}
+                </select>
+              </TableCell>
+              <TableCell>
+                <input ref={examTypeInput} type="text" placeholder="Exam type..." />
+              </TableCell>
+              <TableCell>
+                <input ref={examDateInput} type="text" placeholder="Exam date..." />
               </TableCell>
               <TableCell>
                 <Fab
@@ -50,8 +83,14 @@ export function Exams(prop: ExamsProps) {
                   aria-label="add"
                   size="small"
                   onClick={() => {
-                    // addExam(usernameInput.current!.value, email)
-                    // usernameInput.current!.value = ''
+                    addExam(
+                      examClassInput.current!.value,
+                      examTypeInput.current!.value,
+                      examDateInput.current!.value,
+                      email
+                    )
+                    examTypeInput.current!.value = ''
+                    examDateInput.current!.value = ''
                   }}
                 >
                   <AddIcon />
@@ -60,22 +99,15 @@ export function Exams(prop: ExamsProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/*exams.map((e, i) => (
+            {exams.map((e, i) => (
               <TableRow key={i}>
                 <TableCell component="th" scope="row">
-                  {e.exams}
+                  {e.title}
                 </TableCell>
-                <TableCell align="right">
-                  {' '}
-                  <FormControlLabel
-                    control={<Switch />}
-                    label=""
-                    onChange={handleChange}
-                    name={e.exams!}
-                  ></FormControlLabel>
-                </TableCell>
+                <TableCell>{e.type}</TableCell>
+                <TableCell component="th">{new Date(parseInt(e.date)).toLocaleDateString()}</TableCell>
               </TableRow>
-            ))*/}
+            ))}
           </TableBody>
         </Table>
       </TableContainer>{' '}
