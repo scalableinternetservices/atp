@@ -9,7 +9,7 @@ import {
   ClassesSubscription,
   ClassesSubscriptionVariables,
   FetchClasses,
-  FetchClassesVariables,
+  FetchClassesVariables
 } from '../../graphql/query.gen'
 import { UserContext } from '../auth/user'
 import { AppRouteParams } from '../nav/route'
@@ -112,7 +112,7 @@ export function HomePage(props: HomePageProps) {
             </TableCell>
           </TableRow>
         </Table>
-        <Exams email={email} classes={classes} />
+        <Exams email={email} classes={classes || []} />
       </Page>
     </React.Fragment>
   )
