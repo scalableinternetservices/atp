@@ -48,18 +48,15 @@ export const graphqlRoot: Resolvers<Context> = {
           .where('user.email = :email', { email })
           .getMany()) as any
       let data: any
-      const redisCache = await redis.get(email)
+      const redisCache = await redis.get(email + 'classes')
       if (redisCache) {
         Date.prototype.toJSON = function () {
           return moment(this).format()
         }
         data = deserialize(redisCache)
-        console.log(data)
       } else {
         data = await fetchClasses(email)
-        console.log(data)
-        console.log(serialize(data))
-        await redis.setex(email, 360, serialize(data))
+        await redis.setex(email + 'classes', 360, serialize(data))
       }
       return data
     },
@@ -70,13 +67,42 @@ export const graphqlRoot: Resolvers<Context> = {
         .leftJoinAndSelect('classes.user', 'user')
         .where('user.email IN (:emails)', { emails })
         .getMany()) as any,
-    friends: async (_, { email }) =>
-      (await getRepository(Friends)
-        .createQueryBuilder('friends')
-        .leftJoinAndSelect('friends.user', 'user')
-        .where('user.email = :email', { email })
-        .getMany()) as any,
-    exams: async (_, { email }) => (await Exam.find({ where: { email: email } })) as any,
+    friends: async (_, { email }) => {
+      const fetchFriends = async (email: string) =>
+        (await getRepository(Friends)
+          .createQueryBuilder('friends')
+          .leftJoinAndSelect('friends.user', 'user')
+          .where('user.email = :email', { email })
+          .getMany()) as any
+      let data: any
+      const redisCache = await redis.get(email + 'friends')
+      if (redisCache) {
+        Date.prototype.toJSON = function () {
+          return moment(this).format()
+        }
+        data = deserialize(redisCache)
+      } else {
+        data = await fetchFriends(email)
+        if (data) await redis.setex(email + 'friends', 360, serialize(data))
+      }
+      return data
+    },
+
+    exams: async (_, { email }) => {
+      const fetchExams = async (email: string) => (await Exam.find({ where: { email: email } })) as any
+      let data: any
+      const redisCache = await redis.get(email + 'exams')
+      if (redisCache) {
+        Date.prototype.toJSON = function () {
+          return moment(this).format()
+        }
+        data = deserialize(redisCache)
+      } else {
+        data = await fetchExams(email)
+        await redis.setex(email + 'exams', 360, serialize(data))
+      }
+      return data
+    },
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
