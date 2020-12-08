@@ -143,6 +143,7 @@ export const graphqlRoot: Resolvers<Context> = {
       addClass.endDate = new Date(endDate)
       addClass.user = user
       await addClass.save()
+      await redis.del(email + 'classes')
 
       const classes = check(
         await getRepository(Classes)
@@ -167,6 +168,7 @@ export const graphqlRoot: Resolvers<Context> = {
       newFriend.user = user
       newFriend.friends = friend
       await newFriend.save()
+      await redis.del(email + 'friends')
 
       return true
     },
@@ -197,6 +199,7 @@ export const graphqlRoot: Resolvers<Context> = {
       addExam.date = new Date(date)
 
       await addExam.save()
+      await redis.del(email + 'exams')
 
       return true
     },

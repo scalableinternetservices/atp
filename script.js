@@ -4,17 +4,36 @@ import {sleep} from 'k6'
 
 export const options = {
 	scenarios: {
-		example_scenario: {
-			executor: 'ramping-arrival-rate',
-			startRate: '50',
-			timeUnit: '1s',
-			preAllocatedVUs: 50,
-			maxVUs: 100,
-			stages: [
-				{ target: 200, duration: '30s'},
-				{ target: 0, duration: '30s'},
-			],
-		},
+		// example_scenario: {
+		// 	executor: 'ramping-arrival-rate',
+		// 	startRate: '50',
+		// 	timeUnit: '1s',
+		// 	preAllocatedVUs: 50,
+		// 	maxVUs: 100,
+		// 	stages: [
+		// 		{ target: 200, duration: '30s'},
+		// 		{ target: 0, duration: '30s'},
+		// 	],
+    // },
+    // example_scenario: {
+		// 	executor: 'per-vu-iterations',
+    //   vus: 100,
+    //   iterations: 4,
+    // },
+    example_scenario: {
+      executor: 'constant-vus',
+      vus: 100,
+      duration: '1m',
+    },
+    // example_scenario: {
+    //   executor: 'ramping-vus',
+    //   startVUs: 0,
+    //   stages: [
+    //     { duration: '30s', target: 100 },
+    //     { duration: '30s', target: 0 },
+    //   ],
+    //   gracefulRampDown: '0s',
+    // },
 	},
 }
 
@@ -60,25 +79,11 @@ export default function () {
 // }
 
 // Test add class
-export default function () {
-  //sleep(1)
-	http.post(
-      'http://localhost:3000/graphql',
-      '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-    )
-}
-
-// Test fetch exam
 // export default function () {
 //   //sleep(1)
 // 	http.post(
 //       'http://localhost:3000/graphql',
-//       '{"operationName":"FetchExams","variables":{"email":"jackbrewer7@yahoo.com"},"query":"query FetchExams($email: String!) {\\n  exams(email: $email) {\\n    ...Exams\\n    __typename\\n  }\\n}\\n\\nfragment Exams on Exam {\\n  id\\n  email\\n  title\\n  type\\n  date\\n  __typename\\n}\\n"}',
+//       '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
 // 			{
 // 				headers: {
 // 					'Content-Type': 'application/json',
@@ -86,6 +91,20 @@ export default function () {
 // 			}
 //     )
 // }
+
+// Test fetch exam
+export default function () {
+  //sleep(1)
+	http.post(
+      'http://localhost:3000/graphql',
+      '{"operationName":"FetchExams","variables":{"email":"jackbrewer7@yahoo.com"},"query":"query FetchExams($email: String!) {\\n  exams(email: $email) {\\n    ...Exams\\n    __typename\\n  }\\n}\\n\\nfragment Exams on Exam {\\n  id\\n  email\\n  title\\n  type\\n  date\\n  __typename\\n}\\n"}',
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+    )
+}
 
 // Test add exams
 // export default function () {
@@ -99,4 +118,66 @@ export default function () {
 // 				},
 // 			}
 //     )
+// }
+
+// Test add friends
+// export default function () {
+//   //sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"AddFriend","variables":{"input":{"friend":"Obabo","email":"jackbrewer7@yahoo.com"}},"query":"mutation AddFriend($input: FriendInput!) {\\n  addFriend(input: $input)\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+// }
+
+//Test average user experience
+// export default function () {
+//   sleep(1)
+// 	http.post(
+//       'http://localhost:3000/graphql',
+//       '{"operationName":"AddClass","variables":{"input":{"title":"Test","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
+// 			{
+// 				headers: {
+// 					'Content-Type': 'application/json',
+// 				},
+// 			}
+//     )
+
+//   sleep(1)
+//   http.post(
+//     'http://localhost:3000/graphql',
+//     '{"operationName":"AddClass","variables":{"input":{"title":"Test2","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
+//     {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     }
+//   )
+
+//   sleep(1)
+//   http.post(
+//     'http://localhost:3000/graphql',
+//     '{"operationName":"AddClass","variables":{"input":{"title":"Test3","rRule":"RRULE:INTERVAL=1;FREQ=WEEKLY;BYDAY=MO,WE","zoom":"https://www.amazon.com","startDate":"2020-11-09T21:00:00.000Z","endDate":"2020-11-09T22:00:00.000Z","email":"rothfels@cs.ucla.edu"}},"query":"mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"}',
+//     {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     }
+//   )
+
+//   sleep(1)
+//   http.post(
+//     'http://localhost:3000/graphql',
+//     '{"operationName":"FetchClasses","variables":{"email":"rothfels@cs.ucla.edu"},"query":"query FetchClasses($email: String!) {\\n  classes(email: $email) {\\n    ...Classes\\n    __typename\\n  }\\n}\\n\\nfragment Classes on Classes {\\n  id\\n  title\\n  rRule\\n  zoom\\n  startDate\\n  endDate\\n  __typename\\n}\\n"}',
+//     {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     }
+//   )
+
 // }
