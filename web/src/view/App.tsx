@@ -59,7 +59,7 @@ export function AppBody() {
         <PlaygroundPage path={Route.PLAYGROUND_APP} />
       </Router>
       <Footer>
-        <FooterText>© UCLA Fall 2020 CS 188 ATP</FooterText>
+        <FooterText></FooterText>
       </Footer>
     </>
   )
