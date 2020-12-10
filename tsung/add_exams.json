@@ -1,0 +1,12 @@
+{
+  "operationName": "AddExam",
+  "variables": {
+    "input": {
+      "title": "Test",
+      "email": "jackbrewer7@yahoo.com",
+      "type": "Midterm",
+      "date": "2020-11-09T21:00:00.000Z"
+    }
+  },
+  "query": "mutation AddExam($input: ExamInput!) {\n  addExam(input: $input)\n}\n"
+}

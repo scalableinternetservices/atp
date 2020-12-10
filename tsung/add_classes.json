@@ -10,5 +10,5 @@
       "email": "rothfels@cs.ucla.edu"
     }
   },
-  "query": "mutation AddClass($input: ClassInput!) {\\n  createClass(input: $input)\\n}\\n"
+  "query": "mutation AddClass($input: ClassInput!) {\n  createClass(input: $input)\n}\n"
 }

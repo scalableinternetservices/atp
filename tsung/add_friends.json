@@ -1,0 +1,5 @@
+{
+  "operationName": "AddFriend",
+  "variables": { "input": { "friend": "Obabo", "email": "jackbrewer7@yahoo.com" } },
+  "query": "mutation AddFriend($input: FriendInput!) {\n  addFriend(input: $input)\n}\n"
+}
